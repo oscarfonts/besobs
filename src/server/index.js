@@ -7,6 +7,10 @@ var cartodb = require('cartodb'),
 // initialize express
 var app = express();
 
+
+// TODO show all possible tables
+//client.query("SELECT * FROM CDB_UserTables()", outputRows);
+
 // a friendly little route
 app.get('/api/:table', function (req, res) {
 
@@ -15,7 +19,8 @@ app.get('/api/:table', function (req, res) {
     // connect to cartodb
     var client = new cartodb({
         user: secret.USER,
-        api_key: secret.API_KEY
+        api_key: secret.API_KEY,
+        api_url: "https://" + secret.USER + ".cartodb.com/api/v2/sql?format=GeoJSON"
     });
 
     var outputRows = function (err, data) {
@@ -23,8 +28,8 @@ app.get('/api/:table', function (req, res) {
             console.error(err);
             res.status(500).send(err);
         } else {
-            console.log(data.rows);
-            res.send(data.rows);
+            console.log(data/*.rows*/);
+            res.send(data/*.rows*/);
         }
     };
 
