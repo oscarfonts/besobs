@@ -1,9 +1,14 @@
 var express = require('express'),
+    bodyParser = require('body-parser'),
     cartodb = require('cartodb'),
     secret  = require('./secret.js'),
     Promise = require('promise');
 
 var router = express.Router();
+
+// Parse body as json
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({extended: false}));
 
 var connect = function(asGeoJSON) {
     return new Promise(function(fulfill) {
@@ -42,7 +47,7 @@ var query = function(sql, params, asGeoJSON) {
 
         connect(asGeoJSON).then(query);
     })
-}
+};
 
 var success = function(data) {
     this.send(data);
@@ -63,9 +68,9 @@ router.get('/', function (req, res) {
             if (url[url.length-1] != "/") {
                 url += "/";
             }
-            url += data.rows[i].cdb_usertables;
+            url += data.rows[i]["cdb_usertables"];
             tables.push({
-                name: data.rows[i].cdb_usertables,
+                name: data.rows[i]["cdb_usertables"],
                 url: url
             });
         }
@@ -90,6 +95,46 @@ router.get('/:table/:id', function (req, res) {
     };
 
     query(sql, params, true).then(success.bind(res), error.bind(res));
+});
+
+router.post('/:table', function (req, res) {
+    var data = {
+        user: req.user,
+        table: req.params.table,
+        body: "TODO" // TODO recuperar los datos del POST
+    };
+    console.log(data);
+    // TODO insertar el registro
+    // TODO devolver el nuevo registro, junto con el ID (!)
+    res.send(data);
+});
+
+router.put('/:table/:id', function (req, res) {
+    var data = {
+        user: req.user,
+        table: req.params.table,
+        id: req.params.id,
+        body: "TODO" // TODO recuperar los datos del PUT
+    };
+    console.log(data);
+    // TODO comprobar que el registro realmente existe
+    // TODO modificar el registro
+    // TODO devolver el nuevo registro
+    res.send(data);
+});
+
+router.delete('/:table/:id', function (req, res) {
+    // TODO comprobar que no existe el registro
+    var data = {
+        user: req.user,
+        table: req.params.table,
+        id: req.params.id
+    };
+    console.log(data);
+    // TODO comprobar que el registro realmente existe
+    // TODO borrar el registro
+    // TODO devolver el ID del registro recién borrado
+    res.send(data);
 });
 
 module.exports = router;

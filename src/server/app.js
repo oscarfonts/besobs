@@ -1,17 +1,16 @@
 var express = require('express'),
-    bodyParser = require('body-parser'),
+    authenticate = require('./auth/authenticate'),
     cartodb_api = require('./cartodb/api');
 
 var app = express();
 
-// Parse body as json
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+// Add authentication to API
+app.use('/api', authenticate);
 
-// Add cartodb api
+// Expose cartodb as API
 app.use('/api', cartodb_api);
 
-// Page not found
+// Page not found handler
 app.use(function (req, res) {
     res.status(404).send({
         code: 404,
