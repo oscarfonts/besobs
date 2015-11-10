@@ -1,8 +1,12 @@
 var express = require('express'),
+    cors = require('./cors/cors'),
     authenticate = require('./auth/authenticate'),
     cartodb_api = require('./cartodb/api');
 
 var app = express();
+
+// Add cross-origin headers
+app.use('/api', cors);
 
 // Add authentication to API
 app.use('/api', authenticate);
