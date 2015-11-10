@@ -1,4 +1,4 @@
-//we will organise it better, I promise
+//we will organise it better, I promise. With AMD?
 $( document ).ready(function() {
 	
     //datepicker stuff
@@ -13,11 +13,9 @@ $( document ).ready(function() {
     var Hydda_Full = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
 		attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
-	
 	var marker = L.marker(new L.LatLng(41.425, 2.221), {
 	    draggable: true
 	}).addTo(map);
-	
 	//reflect marker dragging into x and y boxes
 	var xBox = $('#xId');
 	var yBox = $('#yId');
@@ -26,15 +24,14 @@ $( document ).ready(function() {
 		xBox.val(latlng.lng.toFixed(5));
 		yBox.val(latlng.lat.toFixed(5));
 	});
-	
 	//reflect x and y box changes into marker dragging 
 	xBox.change(moveMarker);
 	yBox.change(moveMarker);
 	function moveMarker(e) {
-		marker.setLatLng(new L.LatLng(yBox.val(), xBox.val()));
+		if($.isNumeric(yBox.val()) && $.isNumeric(xBox.val())) marker.setLatLng(new L.LatLng(yBox.val(), xBox.val()));
 	}
 	
-	//species list attacking to MCNB
+	//species list attacking to MCNB (provisional)
 	var classList = $('select#animalClassId');
 	var specieList = $('select#specieId');
 	classList.change(function () {
