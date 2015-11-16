@@ -13,22 +13,22 @@
   	
   	<div class="container">
 	    <h1>Observacions faunístiques <small>Introdueix la teva observació</small></h1>
-		<form>
+		<form id="observacioForm">
 		  <div class="form-group">
 		    <label for="userId">Usuari</label>
-		    <input class="form-control" id="userId" placeholder="User" value="jcalafi" readonly>
+		    <input class="form-control" id="userId" name="user" placeholder="User" value="jcalafi" readonly>
 		  </div>
 		  <div class="form-group">
 		    <label for="dataId">Data de l'observació</label>
-		    <input class="form-control datepicker" id="dataId" placeholder="Data">
+		    <input class="form-control datepicker" name="date" id="dataId" placeholder="Data">
 		  </div>
 		  <div class="form-group">
 		    <label for="xId">Localitació de l'observació (coord X)</label>
-		    <input class="form-control" id="xId" placeholder="Introduïu les coordenades o bé moveu la icona al mapa">
+		    <input class="form-control" id="xId" name="x" placeholder="Introduïu les coordenades o bé moveu la icona al mapa">
 		  </div>
 		  <div class="form-group">
 		    <label for="yId">Localitació de l'observació (coord Y)</label>
-		    <input class="form-control" id="yId" placeholder="Introduïu les coordenades o bé moveu la icona al mapa">
+		    <input class="form-control" id="yId" name="y" placeholder="Introduïu les coordenades o bé moveu la icona al mapa">
 		  </div>
 		  <div class="form-group">
 		    <div id="map" style="height:260px"></div>
@@ -36,7 +36,7 @@
 		  </div>
 		  <div class="form-group">
 		    <label for="animalClassId">Classe</label>
-			<select class="form-control" id="animalClassId" >
+			<select class="form-control" name="animalClass" id="animalClassId" >
 			  <option disabled selected> -- seleccioneu classe -- </option>
 			  <option value="Mammalia">Mamífer</option>
 			  <option value="Aves">Au</option>
@@ -45,22 +45,22 @@
 		  </div>
 		  <div class="form-group">
 		    <label for="specieId">Espècie</label>
-			<select class="form-control" id="specieId" >
+			<select class="form-control" name="specie" id="specieId" >
 				<option disabled selected> -- seleccioneu classe -- </option>
 			</select>
 			<p class="help-block">Seleccioneu una classe abans de seleccionar l'espècie</p>		    
 		  </div>
 		  <div class="form-group">
 		    <label for="exampleInputFile">Fotografia</label>
-		    <input type="file" id="photoId">
+		    <input type="file" id="photoId" name="photo">
 		    <p class="help-block">Pugeu una fotografia de l'animal observat.</p>
 		  </div>
 		  <div class="form-group">
 		    <label for="notesId">Observacions</label>
-		    <textarea class="form-control" rows="3" id="notesId"></textarea>
+		    <textarea class="form-control" rows="3" name="notes" id="notesId"></textarea>
 		  </div>
 
-		  <button type="submit" class="btn btn-default">Enviar</button>
+		  <button type="submit" id="sendButton" class="btn btn-default">Enviar</button>
 		</form>
 	</div>
 	

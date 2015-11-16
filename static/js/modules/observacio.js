@@ -1,11 +1,22 @@
-define(['leaflet', 'jquery', 'bootstrap-datepicker', 'bootstrap-datepicker-ca'], function(L, $) {
+define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepicker-ca'], function(L, $, http) {
+
+	$("#observacioForm").on("submit", function(event) {
+		/* stop form from submitting normally */
+		event.preventDefault();
+		http.auth.set("aveuresi", "funciona");
+		http.put("api/observacions", $(this).serializeArray()).then(function(response) {
+				if(!response) alert("Didn't return anything!");
+				alert("Worked!");
+			}, function(error){
+				alert("There was an error " + error.code + ": " + error.error);
+		});
+	});
 	
     //datepicker stuff
     $('.datepicker').datepicker({
     	//format: 'dd/mm/yyyy',
     	language: 'ca-ES' 
     });
-    
     
     //map stuff
     var map = L.map('map').setView([41.425, 2.221], 14);
