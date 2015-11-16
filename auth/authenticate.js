@@ -17,7 +17,7 @@ passport.use(new BasicStrategy({
 
 var router = express.Router();
 
-//router.get('*', passport.authenticate('basic', {session: false}));
+router.get('*', passport.authenticate('basic', {session: false}));
 router.post('*', passport.authenticate('basic', {session: false}));
 router.put('*', passport.authenticate('basic', {session: false}));
 router.delete('*', passport.authenticate('basic', {session: false}));
