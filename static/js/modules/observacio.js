@@ -1,5 +1,4 @@
-//we will organise it better, I promise. With AMD?
-$( document ).ready(function() {
+define(['leaflet', 'jquery', 'bootstrap-datepicker', 'bootstrap-datepicker-ca'], function(L, $) {
 	
     //datepicker stuff
     $('.datepicker').datepicker({
