@@ -1,7 +1,7 @@
 var require = (function() {
 	var scripts = document.getElementsByTagName('script');
 	var HERE = scripts[scripts.length-1].src.replace(/[^\/]*$/, '');
-	var LIB_PATH = HERE + "bower_components/";
+	var LIB_PATH = HERE + "lib/";
 	return {
 		baseUrl: HERE + "modules/",
 		paths: {
