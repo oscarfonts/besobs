@@ -1,4 +1,5 @@
 node_modules/
+cartodb/secret.js
 auth/users.db
 static/js/lib/
 .idea/

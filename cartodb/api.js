@@ -19,6 +19,26 @@ var escape2 = function (string) {
     return '"' + string.replace('"', '""') + '"';
 };
 
+var parseGeoJSONRequest = function(geojson) {
+    var feature = geojson.features[0];
+    var keys = [];
+    var values = [];
+    for (var key in feature.properties) {
+        if(feature.properties[key]) {
+            keys.push(escape2(key));
+            values.push(escape1(String(feature.properties[key])));
+        }
+    }
+    if (feature.geometry) {
+        keys.push(escape2('the_geom'));
+        values.push("ST_SetSRID(ST_GeomFromGeoJSON(" + escape1(JSON.stringify(feature.geometry)) + "),4326)");
+    }
+    return {
+        keys: keys,
+        values: values
+    };
+};
+
 var getUrl = function (req) {
     var url = req.protocol + "://" + req.get('host');
     url += req.originalUrl;
@@ -115,17 +135,12 @@ router.get('/:table/:id', function (req, res) {
 });
 
 router.post('/:table', function (req, res) {
-    // TODO Insertar req.user
+    // Overwrite username, take the logged one
+    req.body.features[0].properties.username = req.user;
 
     var table = escape2(req.params.table);
-    var keys = [];
-    var values = [];
-    for (var key in req.body) {
-        keys.push(escape2(key));
-        values.push(escape1(req.body[key]));
-    }
-
-    var sql = "INSERT INTO " + table + " (" + keys.join(", ") + ") VALUES (" + values.join(", ") + ") RETURNING cartodb_id";
+    var kv = parseGeoJSONRequest(req.body);
+    var sql = "INSERT INTO " + table + " (" + kv.keys.join(", ") + ") VALUES (" + kv.values.join(", ") + ") RETURNING cartodb_id";
 
     var parse = function (data) {
         var response = data.rows[0];

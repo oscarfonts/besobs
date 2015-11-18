@@ -1,10 +1,38 @@
 define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepicker-ca'], function(L, $, http) {
 
+	var asGeoJSON = function(formValues) {
+		var properties = {};
+		for (var i in formValues) {
+			var prop = formValues[i];
+			properties[prop.name] = prop.value;
+		}
+
+		var geoJSON = {
+			"type": "FeatureCollection",
+			"features": [
+				{
+					"type": "Feature",
+					"geometry": {
+						"type": "Point",
+						"coordinates": [properties.x, properties.y]
+					},
+					"properties": properties
+				}
+			]
+		};
+
+		delete properties.x;
+		delete properties.y;
+
+		return geoJSON;
+	};
+
 	$("#observacioForm").on("submit", function(event) {
 		/* stop form from submitting normally */
 		event.preventDefault();
-		http.auth.set("aveuresi", "funciona");
-		http.put("api/observacions", $(this).serializeArray()).then(function(response) {
+		http.auth.set("user", "password");
+
+		http.post("api/observacions", asGeoJSON($(this).serializeArray())).then(function(response) {
 				if(!response) alert("Didn't return anything!");
 				alert("Worked!");
 			}, function(error){
@@ -14,7 +42,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	
     //datepicker stuff
     $('.datepicker').datepicker({
-    	//format: 'dd/mm/yyyy',
+    	format: 'yyyy-mm-dd',
     	language: 'ca-ES' 
     });
     

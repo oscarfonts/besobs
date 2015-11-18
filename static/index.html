@@ -16,7 +16,7 @@
 		<form id="observacioForm">
 		  <div class="form-group">
 		    <label for="userId">Usuari</label>
-		    <input class="form-control" id="userId" name="user" placeholder="User" value="jcalafi" readonly>
+		    <input class="form-control" id="userId" name="username" placeholder="User" value="jcalafi" readonly>
 		  </div>
 		  <div class="form-group">
 		    <label for="dataId">Data de l'observació</label>
@@ -36,7 +36,7 @@
 		  </div>
 		  <div class="form-group">
 		    <label for="animalClassId">Classe</label>
-			<select class="form-control" name="animalClass" id="animalClassId" >
+			<select class="form-control" name="class" id="animalClassId" >
 			  <option disabled selected> -- seleccioneu classe -- </option>
 			  <option value="Mammalia">Mamífer</option>
 			  <option value="Aves">Au</option>
@@ -45,14 +45,14 @@
 		  </div>
 		  <div class="form-group">
 		    <label for="specieId">Espècie</label>
-			<select class="form-control" name="specie" id="specieId" >
+			<select class="form-control" name="species" id="specieId" >
 				<option disabled selected> -- seleccioneu classe -- </option>
 			</select>
 			<p class="help-block">Seleccioneu una classe abans de seleccionar l'espècie</p>
 		  </div>
 		  <div class="form-group">
-		    <label for="exampleInputFile">Fotografia</label>
-		    <input type="file" id="photoId" name="photo">
+		    <label for="photoId">Fotografia</label>
+		    <input type="file" id="photoId" name="image">
 		    <p class="help-block">Pugeu una fotografia de l'animal observat.</p>
 		  </div>
 		  <div class="form-group">
