@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BESOBS - Observacions faunístiques</title>
-  </head> 
+  </head>
   <body>
   	<div class="container">
-  		<img src="riulogo.png" class="img-responsive" alt="Logo i imatge riu"/>
+        <img src="img/riulogo.png" class="img-responsive" alt="Logo i imatge riu"/>
   	</div>
-  	
+
   	<div class="container">
 	    <h1>Observacions faunístiques <small>Introdueix la teva observació</small></h1>
 		<form id="observacioForm">
@@ -41,14 +41,14 @@
 			  <option value="Mammalia">Mamífer</option>
 			  <option value="Aves">Au</option>
 			  <option value="Reptilia">Rèptil</option>
-			</select>		    
+			</select>
 		  </div>
 		  <div class="form-group">
 		    <label for="specieId">Espècie</label>
 			<select class="form-control" name="specie" id="specieId" >
 				<option disabled selected> -- seleccioneu classe -- </option>
 			</select>
-			<p class="help-block">Seleccioneu una classe abans de seleccionar l'espècie</p>		    
+			<p class="help-block">Seleccioneu una classe abans de seleccionar l'espècie</p>
 		  </div>
 		  <div class="form-group">
 		    <label for="exampleInputFile">Fotografia</label>
@@ -63,9 +63,9 @@
 		  <button type="submit" id="sendButton" class="btn btn-default">Enviar</button>
 		</form>
 	</div>
-	
+
 	<script src="js/config.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.14/require.min.js" data-main="observacio"></script>
-	
+	<script src="js/lib/requirejs/require.js" data-main="observacio"></script>
+
   </body>
 </html>

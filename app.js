@@ -14,7 +14,8 @@ app.use('/api', authenticate);
 // Expose cartodb as API
 app.use('/api', cartodb_api);
 
-//app.use('/', "ehtatik"); // TODO
+// Static contents
+app.use(express.static('static'));
 
 // Page not found handler
 app.use(function (req, res) {
