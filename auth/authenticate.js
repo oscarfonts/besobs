@@ -1,17 +1,16 @@
 var express = require('express'),
     passport = require('passport'),
-    BasicStrategy = require('passport-http').BasicStrategy;
+    BasicStrategy = require('passport-http').BasicStrategy,
+    users = require('./users');
 
 var realm = "API";
 
 passport.use(new BasicStrategy({
         realm: realm
     }, function (user, password, done) {
-        if (user == "user" && password == "password") {
-            return done(null, user);
-        } else {
-            return done(null, false);
-        }
+        users.check(user, password, function(name) {
+            return done(null, name);
+        });
     })
 );
 

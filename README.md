@@ -1,36 +1,47 @@
-=========================
-Observacions Faunístiques
-=========================
+# Observacions Faunístiques
 
 
-Running Server
-==============
+## Install and run
 
-Create the secret.js file and fill in your CartoDB credentials (username and api key); use the example file as model.
+Requires git, node and npm.
+
+Clone this project:
+
+    git clone https://github.com/oscarfonts/besobs.git
+
+Install node dependencies:
+
+    npm install
+
+Install bower dependencies:
+
+    bower install
+
+Create some users:
+
+    node auth/create_user.js <username> <password>
+
+Note an users database will be created on ```auth/users.db```.
+
+Create the `cartodb/secret.js` file and put your CartoDB credentials (username and api key). Use `cartodb/secret.js.example` as model.
 
 Run using node:
 
-> npm install
-> node server.js
+    node server.js
 
 Then access through your browser:
 
-   http://localhost:2015/api/
+   <http://localhost:2015/>
+
+   <http://localhost:2015/api/>
 
 
+## Adding dependencies
 
-Using Bower
-===========
+Server side:
 
-To install the development version of the app, you need to have bower installed (first, you should install node, npm and git)
-http://bower.io/#install-bower
+    npm install --save <node_package>
 
-Then get the dependencies via bower
->bower install
+Client side:
 
-A good way to run the app: install and run http-server
->npm install -g http-server
->http-server -p 6969
-
-To add external components, do it also via bower
->bower install --save bootstrap-datepicker
+    bower install --save <bower_package>
