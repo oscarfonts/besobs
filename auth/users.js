@@ -1,10 +1,12 @@
-var sqlite3 = require('sqlite3').verbose(),
+var crypto = require('crypto'),
+    sqlite3 = require('sqlite3'),
     path = require('path');
 
 var db = new sqlite3.Database(path.join(__dirname, 'users.db'));
 
 var hash = function(password) {
-    return password;
+    var salt = 'kd8c2YYSuEjQsEWc8KQFCGHx';
+    return crypto.pbkdf2Sync(password, salt, 4096, 64, 'sha256').toString('hex');
 };
 
 var users = {
