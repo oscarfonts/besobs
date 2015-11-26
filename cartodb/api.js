@@ -2,7 +2,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     cartodb = require('cartodb'),
     secret = require('./secret.js'),
-    Promise = require('promise');
+    Promise = require('promise'),
+    multiparty = require('multiparty');
 
 var router = express.Router();
 
@@ -135,20 +136,35 @@ router.get('/:table/:id', function (req, res) {
 });
 
 router.post('/:table', function (req, res) {
-    // Overwrite username, take the logged one
-    req.body.features[0].properties.username = req.user;
-
-    var table = escape2(req.params.table);
-    var kv = parseGeoJSONRequest(req.body);
-    var sql = "INSERT INTO " + table + " (" + kv.keys.join(", ") + ") VALUES (" + kv.values.join(", ") + ") RETURNING cartodb_id";
-
-    var parse = function (data) {
-        var response = data.rows[0];
-        response.url = getUrl(req) + data.rows[0]["cartodb_id"];
-        res.send(response);
-    };
-
-    query(sql, null, false).then(parse, error.bind(res));
+    // parse a file upload 
+    var form = new multiparty.Form();
+    
+    form.parse(req, function(err, fields, files) {
+      if (err) {
+        //TODO: error management
+      }
+      
+      var geojson = JSON.parse(fields.geojson[0]);
+      
+      // Overwrite username, take the logged one
+      geojson.features[0].properties.username = req.user;
+    
+      var table = escape2(req.params.table);
+      var kv = parseGeoJSONRequest(geojson);
+      var sql = "INSERT INTO " + table + " (" + kv.keys.join(", ") + ") VALUES (" + kv.values.join(", ") + ") RETURNING cartodb_id";
+    
+      var parse = function (data) {
+          var response = data.rows[0];
+          response.url = getUrl(req) + data.rows[0]["cartodb_id"];
+          res.send(response);
+      };
+    
+      query(sql, null, false).then(parse, error.bind(res));
+      
+      //TODO: manage image
+      if(files.file[0]) console.log("You may find an image at " + files.file[0].path);
+      
+    });
 });
 
 router.put('/:table/:id', function (req, res) {
