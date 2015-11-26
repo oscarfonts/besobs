@@ -24,7 +24,6 @@ define(['base64', 'jquery'], function(base64, $) {
         // WARNING: This sends a clear pw on the wire for every single AJAX request...
         if (auth) {
             request.beforeSend = function(xhr) {
-            	//alert(auth.username);
                 xhr.setRequestHeader("Authorization",
                     "Basic " + base64.encode(auth.username + ":" + auth.password));
             };
@@ -106,15 +105,17 @@ define(['base64', 'jquery'], function(base64, $) {
             data: JSON.stringify(data)
         });
     };
-    
-    var post = function(url, data) {
+        
+    var post = function(url, data, contentType) {
         clearFromCache(url);
+        if (typeof(contentType)==='undefined') contentType = "application/json";
         
         return send({
             type: 'POST',
             url: url,
-            contentType: "application/json",
-            data: JSON.stringify(data)
+            contentType: contentType,
+            processData: false,
+            data: data
         });
     };
     

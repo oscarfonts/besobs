@@ -32,9 +32,15 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		event.preventDefault();
 		http.auth.set("user", "password");
 
-		http.post("api/observacions", asGeoJSON($(this).serializeArray())).then(function(response) {
+		//we build the post data manually to set our geojson structure
+		var data = new FormData();
+		var fileInput = $("#photoId");
+		data.append("file", fileInput[0].files[0]);
+		data.append("geojson", JSON.stringify(asGeoJSON($(this).serializeArray())));
+
+		http.post("api/observacions", data, false).then(function(response) {
 				if(!response) alert("Didn't return anything!");
-				alert("Worked!");
+				else alert("Worked!");
 			}, function(error){
 				alert("There was an error " + error.code + ": " + error.error);
 		});
