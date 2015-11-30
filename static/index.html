@@ -11,7 +11,7 @@
         <img src="img/riulogo.png" class="img-responsive" alt="Logo i imatge riu"/>
   	</div>
 
-  	<div class="container">
+  	<div class="container" id="observacioPage">
 	    <h1>Observacions faunístiques <small>Introdueix la teva observació</small></h1>
 		<form id="observacioForm">
 		  <div class="form-group">
@@ -63,6 +63,20 @@
 		  <button type="submit" id="sendButton" class="btn btn-default">Enviar</button>
 		</form>
 	</div>
+	<!-- end of observacioPage -->
+	
+    <div class="container" id="loginPage">
+
+      <form class="form-signin" id="loginForm">
+        <h2 class="form-signin-heading">Introduir usuari</h2>
+        <label for="inputUser" class="sr-only">Usuari</label>
+        <input type="text" id="inputUser" class="form-control" placeholder="Usuari" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+      </form>
+
+    </div> <!-- /container -->	
 
 	<script src="js/config.js"></script>
 	<script src="js/lib/requirejs/require.js" data-main="observacio"></script>

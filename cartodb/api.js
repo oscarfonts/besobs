@@ -135,6 +135,11 @@ router.get('/:table/:id', function (req, res) {
     query(sql, params, true).then(success.bind(res), error.bind(res));
 });
 
+//don't panic: this won't be here. just faking
+router.post('/fakelogin', function (req, res) {
+	res.send({login: 'OK'});
+});
+
 router.post('/:table', function (req, res) {
     // parse a file upload 
     var form = new multiparty.Form();

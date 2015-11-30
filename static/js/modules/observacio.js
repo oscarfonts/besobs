@@ -26,11 +26,49 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 
 		return geoJSON;
 	};
+	
+	var showPage = function(id) {
+		if(id == "login") {
+			$("#loginPage").show();
+			$("#observacioPage").hide();
+		} else {
+			$("#loginPage").hide();
+			$("#observacioPage").show();
+		}
+	};
+	
+	showPage("login");
+	
+	$("#loginForm").on("submit", function(event) {
+		/* stop form from submitting normally */
+		event.preventDefault();
+		
+		var data = {
+			user: $("#inputUser").val(),
+			password: $("#inputPassword").val()
+		};
+		
+		// to be removed: JSON.stringify and fakelogin
+		http.post("/api/fakelogin/", JSON.stringify(data)).then(function(response) {
+				if(!response) alert("Didn't return anything!");
+				else {
+					if(response.login == "OK") {
+						http.auth.set(data.user, data.password);
+						showPage("observacio");
+					} else {
+						alert("Wrong user/password");
+					}
+				}
+			}, function(error){
+				alert("There was an error " + error.code + ": " + error.error);
+		});
+		
+	});
 
 	$("#observacioForm").on("submit", function(event) {
 		/* stop form from submitting normally */
 		event.preventDefault();
-		http.auth.set("user", "password");
+		http.auth.set("prova", "prova");
 
 		//we build the post data manually to set our geojson structure
 		var data = new FormData();
