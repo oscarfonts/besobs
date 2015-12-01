@@ -43,18 +43,15 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		/* stop form from submitting normally */
 		event.preventDefault();
 		
-		var data = {
-			user: $("#inputUser").val(),
-			password: $("#inputPassword").val()
-		};
+		// we set the user and pwd
+		http.auth.set($("#inputUser").val(), $("#inputPassword").val());
 		
-		// to be removed: JSON.stringify and fakelogin
-		http.post("/api/fakelogin/", JSON.stringify(data)).then(function(response) {
+		http.post("/api/login/", null).then(function(response) {
 				if(!response) alert("Didn't return anything!");
 				else {
 					if(response.login == "OK") {
-						http.auth.set(data.user, data.password);
 						showPage("observacio");
+						$("#userId").val($("#inputUser").val());
 					} else {
 						alert("Wrong user/password");
 					}
@@ -68,7 +65,6 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	$("#observacioForm").on("submit", function(event) {
 		/* stop form from submitting normally */
 		event.preventDefault();
-		http.auth.set("prova", "prova");
 
 		//we build the post data manually to set our geojson structure
 		var data = new FormData();
