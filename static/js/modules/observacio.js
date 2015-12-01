@@ -46,7 +46,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		// we set the user and pwd
 		http.auth.set($("#inputUser").val(), $("#inputPassword").val());
 		
-		http.post("/api/login/", null).then(function(response) {
+		http.post("/api/login/").then(function(response) {
 				if(!response) alert("Didn't return anything!");
 				else {
 					if(response.login == "OK") {
@@ -72,7 +72,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		data.append("file", fileInput[0].files[0]);
 		data.append("geojson", JSON.stringify(asGeoJSON($(this).serializeArray())));
 
-		http.post("api/observacions", data, false).then(function(response) {
+		http.post("api/observacions", data).then(function(response) {
 				if(!response) alert("Didn't return anything!");
 				else alert("Worked!");
 			}, function(error){

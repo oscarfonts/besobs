@@ -106,14 +106,27 @@ define(['base64', 'jquery'], function(base64, $) {
         });
     };
         
-    var post = function(url, data, contentType) {
+    var post = function(url, data) {
         clearFromCache(url);
-        if (typeof(contentType)==='undefined') contentType = "application/json";
+
+        if (typeof(data) == 'object' && Object.getPrototypeOf(data)=== FormData.prototype) {
+        	return postMultipart(url, data);
+        } else {
+        	return send({
+	            type: 'POST',
+	            url: url,
+	            contentType: "application/json",
+	            data: JSON.stringify(data)
+        	});
+        }
+    };
+    
+    var postMultipart = function(url, data) {
         
         return send({
             type: 'POST',
             url: url,
-            contentType: contentType,
+            contentType: false,
             processData: false,
             data: data
         });
