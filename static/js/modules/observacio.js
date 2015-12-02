@@ -37,6 +37,27 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		}
 	};
 	
+	var checkMandatory = function(fields, scroll) {
+		var result = [];
+		for (var i = 0; i < fields.length; i ++) {
+			var field = $("#" + fields[i]);
+			if(!field.val()) {
+				field.parent().addClass("has-error");
+				//if first result, scroll there
+				if(scroll && result.indexOf(false) == -1) {
+					$('html, body').animate({
+				        scrollTop: field.offset().top
+				    }, 1000);
+				}
+				result[i] = false;
+			} else {
+				field.parent().removeClass("has-error");
+				result[i] = true;
+			}
+		}
+		return result;
+	};
+	
 	showPage("login");
 	
 	$("#loginForm").on("submit", function(event) {
@@ -65,6 +86,12 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	$("#observacioForm").on("submit", function(event) {
 		/* stop form from submitting normally */
 		event.preventDefault();
+		
+		//form validation
+		var mandatoryFields = ["dataId", "xId", "yId", "animalClassId", "specieId"];
+		var checked = checkMandatory(mandatoryFields, true);
+		//if one of the mandatory fields is missing, cancel the form submission
+		if(checked.indexOf(false) != -1) return false;
 
 		//we build the post data manually to set our geojson structure
 		var data = new FormData();
