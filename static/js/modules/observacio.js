@@ -67,21 +67,30 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		// we set the user and pwd
 		http.auth.set($("#inputUser").val(), $("#inputPassword").val());
 		
-		http.post("/api/login/").then(function(response) {
-				if(!response) alert("Didn't return anything!");
-				else {
-					if(response.login == "OK") {
-						showPage("observacio");
-						$("#userId").val($("#inputUser").val());
-					} else {
-						alert("Wrong user/password");
-					}
-				}
-			}, function(error){
-				alert("There was an error " + error.code + ": " + error.error);
-		});
-		
+		http.post("/api/login/").then(loginOK, loginKO);
 	});
+	
+	var loginOK = function(response) {
+		if(!response) alert("Didn't return anything!");
+		else {
+			if(response.login == "OK") {
+				showPage("observacio");
+				$("#userId").val($("#inputUser").val());
+			} else {
+				alert("Wrong user/password");
+			}
+		}
+	};
+	
+    function loginKO(error) {
+        if (error.code && error.code == 401) {
+            message = "Accés denegat. Usuari o password incorrectes.";
+        } else {
+            message = "S'ha produït un error en comprovar l'usuari.<br/>Contacteu amb l'administrador.";
+        }
+        $("#loginError").html('<div class="alert alert-danger">'+message+'</div>');
+        http.auth.clear();
+    }	
 
 	$("#observacioForm").on("submit", function(event) {
 		/* stop form from submitting normally */
