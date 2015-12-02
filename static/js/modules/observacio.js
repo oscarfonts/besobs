@@ -110,7 +110,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 
 		http.post("api/observacions", data).then(function(response) {
 				if(!response) alert("Didn't return anything!");
-				else alert("Worked!");
+				else $("#modalSuccess").modal("show");
 			}, function(error){
 				alert("There was an error " + error.code + ": " + error.error);
 		});
