@@ -1,7 +1,8 @@
 var express = require('express'),
     cors = require('./cors/cors'),
     authenticate = require('./auth/authenticate'),
-    cartodb_api = require('./cartodb/api');
+    cartodb_api = require('./cartodb/api'),
+    file_upload = require('./file_upload/multipart');
 
 var app = express();
 
@@ -10,6 +11,10 @@ app.use('/api', cors);
 
 // Add authentication to API
 app.use('/api', authenticate);
+
+// Manage file upload (multipart data)
+//still not working
+//app.use('/api', file_upload);
 
 // Expose cartodb as API
 app.use('/api', cartodb_api);
