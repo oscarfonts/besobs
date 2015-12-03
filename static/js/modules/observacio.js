@@ -149,13 +149,11 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	var classList = $('select#animalClassId');
 	var specieList = $('select#specieId');
 	classList.change(function () {
-		var query = "SELECT DISTINCT scientificname FROM mcnb_dev  where class='" + $(this).val() +"' order by scientificname";
-		$.getJSON("http://mcnb.cartodb.com/api/v2/sql",{q: query, ajax: 'true'}, function(j){
-	      var options = '';
-	      for (var i = 0; i < j.rows.length; i++) {
-	        options += '<option value="' + j.rows[i].scientificname + '">' + j.rows[i].scientificname + '</option>';
-	      }
-	      specieList.html(options);
+		$.getJSON('js/json/' + this.value + '.json',function(data){
+		  specieList.html('');
+	      $.each(data, function( key, val ) {
+		    specieList.append('<option value="' + val + '">' + val + '</option>');
+		  });
 	    })
 	});
 	
