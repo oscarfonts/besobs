@@ -3,7 +3,9 @@ var express = require('express'),
     cartodb = require('cartodb'),
     secret = require('./secret.js'),
     Promise = require('promise'),
-    multiparty = require('multiparty');
+    multiparty = require('multiparty'),
+    shortid = require('shortid'),
+    fs = require('fs');
 
 var router = express.Router();
 
@@ -161,8 +163,17 @@ router.post('/:table', function (req, res) {
     
       query(sql, null, false).then(parse, error.bind(res));
       
-      //TODO: manage image
-      if(files.file[0]) console.log("You may find an image at " + files.file[0].path);
+      // otherwise we can use require('path')
+      function getExtension(filename) {
+	     var i = filename.lastIndexOf('.');
+	     return (i < 0) ? '' : filename.substr(i);
+	  }
+      
+      // manage image
+      // TODO: error management
+      var file = files.file[0];
+      // with files.file[0].size we could limit size  
+      fs.createReadStream(file.path).pipe(fs.createWriteStream('file_upload/uploads/' +  shortid.generate() + getExtension(file.path)));
       
     });
 });

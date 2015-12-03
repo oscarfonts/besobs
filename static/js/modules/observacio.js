@@ -145,10 +145,9 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		if($.isNumeric(yBox.val()) && $.isNumeric(xBox.val())) marker.setLatLng(new L.LatLng(yBox.val(), xBox.val()));
 	}
 	
-	//species list attacking to MCNB (provisional)
-	var classList = $('select#animalClassId');
+	//species list in plain JSON
 	var specieList = $('select#specieId');
-	classList.change(function () {
+	$('select#animalClassId').change(function () {
 		$.getJSON('js/json/' + this.value + '.json',function(data){
 		  specieList.html('');
 	      $.each(data, function( key, val ) {
