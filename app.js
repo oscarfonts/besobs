@@ -15,6 +15,8 @@ app.use('/api', authenticate);
 // Manage file upload (multipart data)
 //still not working
 //app.use('/api', file_upload);
+//the uploaded files have to be public
+app.use('/images', express.static('file_upload/uploads'));
 
 // Expose cartodb as API
 app.use('/api', cartodb_api);
