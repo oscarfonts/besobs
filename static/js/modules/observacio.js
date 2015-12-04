@@ -1,5 +1,9 @@
 define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepicker-ca'], function(L, $, http) {
 
+	var map = L.map('map');
+	var center = [41.425, 2.221];
+	var zoom = 14;
+	
 	var asGeoJSON = function(formValues) {
 		var properties = {};
 		for (var i in formValues) {
@@ -34,6 +38,8 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		} else {
 			$("#loginPage").hide();
 			$("#observacioPage").show();
+			// we must set view here because hide and show makes map lose its center
+			map.setView(center, zoom);
 		}
 	};
 	
@@ -59,7 +65,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	};
 	
 	showPage("login");
-	
+		
 	$("#loginForm").on("submit", function(event) {
 		/* stop form from submitting normally */
 		event.preventDefault();
@@ -123,7 +129,6 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
     });
     
     //map stuff
-    var map = L.map('map').setView([41.425, 2.221], 14);
     var Hydda_Full = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
 		attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
