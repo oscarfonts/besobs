@@ -13,8 +13,7 @@ app.use('/api', cors);
 app.use('/api', authenticate);
 
 // Manage file upload (multipart data)
-//still not working
-//app.use('/api', file_upload);
+app.use('/api', file_upload);
 //the uploaded files have to be public
 app.use('/images', express.static('file_upload/uploads'));
 

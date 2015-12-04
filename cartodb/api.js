@@ -2,10 +2,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     cartodb = require('cartodb'),
     secret = require('./secret.js'),
-    Promise = require('promise'),
-    multiparty = require('multiparty'),
-    shortid = require('shortid'),
-    fs = require('fs');
+    Promise = require('promise');
 
 var router = express.Router();
 
@@ -138,44 +135,21 @@ router.get('/:table/:id', function (req, res) {
 });
 
 router.post('/:table', function (req, res) {
-    // parse a file upload 
-    var form = new multiparty.Form();
+	
+    var table = escape2(req.params.table);
+    var kv = parseGeoJSONRequest(JSON.parse(req.body));
+    // Overwrite username, take the logged one
+    kv['username']= req.user;
     
-    form.parse(req, function(err, fields, files) {
-      if (err) {
-        //TODO: error management
-      }
-      
-      var geojson = JSON.parse(fields.geojson[0]);
-      
-      // Overwrite username, take the logged one
-      geojson.features[0].properties.username = req.user;
-    
-      var table = escape2(req.params.table);
-      var kv = parseGeoJSONRequest(geojson);
-      var sql = "INSERT INTO " + table + " (" + kv.keys.join(", ") + ") VALUES (" + kv.values.join(", ") + ") RETURNING cartodb_id";
-    
-      var parse = function (data) {
-          var response = data.rows[0];
-          response.url = getUrl(req) + data.rows[0]["cartodb_id"];
-          res.send(response);
-      };
-    
-      query(sql, null, false).then(parse, error.bind(res));
-      
-      // otherwise we can use require('path')
-      function getExtension(filename) {
-	     var i = filename.lastIndexOf('.');
-	     return (i < 0) ? '' : filename.substr(i);
-	  }
-      
-      // manage image
-      // TODO: error management
-      var file = files.file[0];
-      // with files.file[0].size we could limit size  
-      fs.createReadStream(file.path).pipe(fs.createWriteStream('file_upload/uploads/' +  shortid.generate() + getExtension(file.path)));
-      
-    });
+    var sql = "INSERT INTO " + table + " (" + kv.keys.join(", ") + ") VALUES (" + kv.values.join(", ") + ") RETURNING cartodb_id";
+
+    var parse = function (data) {
+        var response = data.rows[0];
+        response.url = getUrl(req) + data.rows[0]["cartodb_id"];
+        res.send(response);
+    };
+
+    query(sql, null, false).then(parse, error.bind(res));
 });
 
 router.put('/:table/:id', function (req, res) {
