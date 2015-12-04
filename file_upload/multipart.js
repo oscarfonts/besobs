@@ -31,7 +31,8 @@ router.post("*", function (req, res, next) {
       // with files.file[0].size we could limit size  
       var filename = shortid.generate() + getExtension(file.path);
       fs.createReadStream(file.path).pipe(fs.createWriteStream('file_upload/uploads/' +  filename));
-
+            
+      geojson.features[0].properties.image = "http://localhost:2015/images/" + filename;
       req.body = JSON.stringify(geojson);
       
       next();
