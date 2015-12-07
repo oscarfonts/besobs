@@ -1,13 +1,10 @@
 var express = require('express'),
     multiparty = require('multiparty'),
     shortid = require('shortid'),
-    fs = require('fs');
+    fs = require('fs'),
+    conf = require('./conf.js');
 
 var router = express.Router();
-
-var uploadDir = 'file_upload/uploads/';
-var uploadUrl = 'uploads/';
-var publicUrl = 'http://demo.geomati.co/besobs/';
 
 router.post("*", function (req, res, next) {
 	
@@ -34,16 +31,15 @@ router.post("*", function (req, res, next) {
       var file = files.file[0];
       // with files.file[0].size we could limit size  
       var filename = shortid.generate() + getExtension(file.path);
-      fs.createReadStream(file.path).pipe(fs.createWriteStream(uploadDir +  filename));
+      fs.createReadStream(file.path).pipe(fs.createWriteStream(conf.UPLOAD_DIR +  filename));
             
-      geojson.features[0].properties.image = publicUrl + uploadUrl + filename;
+      geojson.features[0].properties.image = conf.PUBLIC_URL + conf.UPLOAD_URL + filename;
       req.body = JSON.stringify(geojson);
       
       next();
             
     });
    
-
 });
 
 module.exports = router;
