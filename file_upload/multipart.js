@@ -5,6 +5,10 @@ var express = require('express'),
 
 var router = express.Router();
 
+var uploadDir = 'file_upload/uploads/';
+var uploadUrl = 'uploads/';
+var publicUrl = 'http://demo.geomati.co/besobs/';
+
 router.post("*", function (req, res, next) {
 	
     // parse a file upload 
@@ -30,9 +34,9 @@ router.post("*", function (req, res, next) {
       var file = files.file[0];
       // with files.file[0].size we could limit size  
       var filename = shortid.generate() + getExtension(file.path);
-      fs.createReadStream(file.path).pipe(fs.createWriteStream('file_upload/uploads/' +  filename));
+      fs.createReadStream(file.path).pipe(fs.createWriteStream(uploadDir +  filename));
             
-      geojson.features[0].properties.image = "http://localhost:2015/images/" + filename;
+      geojson.features[0].properties.image = publicUrl + uploadUrl + filename;
       req.body = JSON.stringify(geojson);
       
       next();
