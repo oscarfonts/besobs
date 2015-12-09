@@ -14,13 +14,30 @@ passport.use(new BasicStrategy({
     })
 );
 
+var authenticate = function(req, res, next) {
+    passport.authenticate('basic', { session: false }, function(err, user) {
+        if (!err && !user) {
+            // Invalid credentials - trigger the login dialog
+            var challenge = 'Basic realm=' + realm;
+            if(req.get('x-requested-with') == 'XMLHttpRequest') {
+                // Except in case of AJAX calls, where we don't want browsers show their bundled login dialog
+                challenge = 'x' + challenge;
+            }
+            res.set('WWW-Authenticate', challenge);
+            return res.status(401).end();
+        } else {
+            return next(err);
+        }
+    })(req, res, next);
+};
+
 var router = express.Router();
 
 //login doesn't require user/pwd headers
-router.get('*', passport.authenticate('basic', {session: false}));
-router.post('*', passport.authenticate('basic', {session: false}));
-router.put('*', passport.authenticate('basic', {session: false}));
-router.delete('*', passport.authenticate('basic', {session: false}));
+router.get('*', authenticate);
+router.post('*', authenticate);
+router.put('*', authenticate);
+router.delete('*', authenticate);
 
 router.get('/logout', function (req, res) {
     res.set('WWW-Authenticate', 'Basic realm=' + realm);
