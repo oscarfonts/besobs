@@ -64,8 +64,10 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		return result;
 	};
 	
+	// everything is hidden until loaded
 	showPage("login");
-		
+	$("body").show();
+	
 	$("#loginForm").on("submit", function(event) {
 		/* stop form from submitting normally */
 		event.preventDefault();
