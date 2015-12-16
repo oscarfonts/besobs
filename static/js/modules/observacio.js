@@ -41,6 +41,8 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 			$("#observacioPage").show();
 			// we must set view here because hide and show makes map lose its center
 			map.setView(center, zoom);
+			// then, we ask for position
+			getLocation(setPosition);
 		}
 	};
 	
@@ -93,7 +95,6 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 			if(response.login == "OK") {
 				showPage("observacio");
 				$("#userId").val($("#inputUser").val());
-				getLocation(setPosition);
 			} else {
 				alert("Wrong user/password");
 			}
