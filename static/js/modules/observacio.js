@@ -3,6 +3,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	var map = L.map('map');
 	var center = [41.425, 2.221];
 	var zoom = 14;
+	var decimals = 5; //number of decimals to show lon/lat
 	
 	var asGeoJSON = function(formValues) {
 		var properties = {};
@@ -64,6 +65,14 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		return result;
 	};
 	
+	function getLocation(func) {
+	    if (navigator.geolocation) {
+	        navigator.geolocation.getCurrentPosition(func);
+	    } else {
+	        console.log("Geolocation is not supported by this browser.");
+	    }
+	}	
+	
 	// everything is hidden until loaded
 	showPage("login");
 	$("body").show();
@@ -84,6 +93,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 			if(response.login == "OK") {
 				showPage("observacio");
 				$("#userId").val($("#inputUser").val());
+				getLocation(setPosition);
 			} else {
 				alert("Wrong user/password");
 			}
@@ -142,14 +152,26 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	var yBox = $('#yId');
 	marker.on('dragend', function (e) {
 		var latlng = e.target.getLatLng();
-		xBox.val(latlng.lng.toFixed(5));
-		yBox.val(latlng.lat.toFixed(5));
+		xBox.val(latlng.lng.toFixed(decimals));
+		yBox.val(latlng.lat.toFixed(decimals));
 	});
 	//reflect x and y box changes into marker dragging 
 	xBox.change(moveMarker);
 	yBox.change(moveMarker);
 	function moveMarker(e) {
-		if($.isNumeric(yBox.val()) && $.isNumeric(xBox.val())) marker.setLatLng(new L.LatLng(yBox.val(), xBox.val()));
+		if($.isNumeric(yBox.val()) && $.isNumeric(xBox.val())) {
+			var coords = new L.LatLng(yBox.val(), xBox.val());
+			marker.setLatLng(coords);
+			map.panTo(coords);
+		}
+	}
+	function setPosition(pos) {
+		var crd = pos.coords;
+		if(crd) {
+			xBox.val(crd.longitude.toFixed(decimals));
+			yBox.val(crd.latitude.toFixed(decimals));
+			moveMarker();
+		}
 	}
 	
 	//species list in plain JSON
