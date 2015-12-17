@@ -86,7 +86,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		// we set the user and pwd
 		http.auth.set($("#inputUser").val(), $("#inputPassword").val());
 		
-		http.post("/api/login/").then(loginOK, loginKO);
+		http.post("api/login/").then(loginOK, loginKO);
 	});
 	
 	var loginOK = function(response) {
