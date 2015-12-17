@@ -63,9 +63,15 @@ Get the dependencies:
     npm install
     bower install
 
-Create the `cartodb/secret.js` file and add some users:
+Create the `cartodb/secret.js` file.
+
+Add some users:
 
     node auth/create_user.js <username> <password>
+
+Create the photo upload dir:
+
+    mkdir -p file_upload/uploads
 
 Change permissions over files:
 
