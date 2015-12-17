@@ -15,8 +15,8 @@ router.post("*", function (req, res, next) {
     form.parse(req, function(err, fields, files) {
 
       if (err) {
-        //TODO: error management
         console.log(err);
+        next(); // go to the next function to see if the request is not a multipart
       }
       var geojson = JSON.parse(fields.geojson[0]);
             
