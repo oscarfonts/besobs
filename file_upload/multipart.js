@@ -27,13 +27,13 @@ router.post("*", function (req, res, next) {
 	  }
       
       // manage image
-      // TODO: error management
-      var file = files.file[0];
-      // with files.file[0].size we could limit size  
-      var filename = shortid.generate() + getExtension(file.path);
-      fs.createReadStream(file.path).pipe(fs.createWriteStream(conf.UPLOAD_DIR +  filename));
-            
-      geojson.features[0].properties.image = conf.PUBLIC_URL + conf.UPLOAD_URL + filename;
+      if(files.file) {
+	      var file = files.file[0];
+	      // with files.file[0].size we could limit size  
+	      var filename = shortid.generate() + getExtension(file.path);
+	      fs.createReadStream(file.path).pipe(fs.createWriteStream(conf.UPLOAD_DIR +  filename));
+	      geojson.features[0].properties.image = conf.PUBLIC_URL + conf.UPLOAD_URL + filename;
+	  }
       req.body = JSON.stringify(geojson);
       
       next();
