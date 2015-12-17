@@ -26,6 +26,7 @@ var authenticate = function(req, res, next) {
             res.set('WWW-Authenticate', challenge);
             return res.status(401).end();
         } else {
+        	req.user = user;
             return next(err);
         }
     })(req, res, next);
