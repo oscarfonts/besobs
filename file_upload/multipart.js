@@ -10,6 +10,7 @@ router.post("*", function (req, res, next) {
 	
     // parse a file upload 
     var form = new multiparty.Form();
+    var maxPhotoSize = 5000000; //in bytes
     
     
     form.parse(req, function(err, fields, files) {
@@ -25,17 +26,55 @@ router.post("*", function (req, res, next) {
 	     var i = filename.lastIndexOf('.');
 	     return (i < 0) ? '' : filename.substr(i);
 	  }
+	  
+	  function copyFile(source, target, cb) {
+		  var cbCalled = false;
+		
+		  var rd = fs.createReadStream(source);
+		  rd.on("error", function(err) {
+		    done(err);
+		  });
+		  var wr = fs.createWriteStream(target);
+		  wr.on("error", function(err) {
+		    done(err);
+		  });
+		  wr.on("close", function(ex) {
+		    done();
+		  });
+		  rd.pipe(wr);
+		
+		  function done(err) {
+		    if (!cbCalled) {
+		      cb(err);
+		      cbCalled = true;
+		    }
+		  }
+	  }
+	  
+	  function sendError(error) {
+	  	  //we won't send the error, just log and continue to the next module. The file is not required
+	  	  console.log(error);
+		  //res.status(500).send(error);
+	  };
+	  
+	  function fileError(error) {
+	  	  sendError("Error creating file: " + error); 
+	  }
       
       // manage image
       if(files.file) {
 	      var file = files.file[0];
-	      // with files.file[0].size we could limit size  
+	      if(files.file[0].size > maxPhotoSize) {
+	      	sendError("Maximum photo size of " + maxPhotoSize + " exceeded");
+	      }
 	      var filename = shortid.generate() + getExtension(file.path);
-	      fs.createReadStream(file.path).pipe(fs.createWriteStream(conf.UPLOAD_DIR +  filename));
+	      
+      	  copyFile(file.path, conf.UPLOAD_DIR +  filename, fileError);
 	      geojson.features[0].properties.image = conf.PUBLIC_URL + conf.UPLOAD_URL + filename;
+
 	  }
+	  
       req.body = JSON.stringify(geojson);
-      
       next();
             
     });
