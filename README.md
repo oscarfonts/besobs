@@ -96,3 +96,22 @@ And access:
 
     http://demo.geomati.co/besobs/
 
+### Server update script
+
+```
+wget https://github.com/oscarfonts/besobs/archive/master.zip
+unzip master.zip
+rm master.zip
+cp besobs/cartodb/secret.js besobs-master/cartodb/
+cp besobs/auth/users.db besobs-master/auth/
+cp -r besobs/file_upload/uploads besobs-master/file_upload/
+mv besobs besobs-old
+mv besobs-master besobs
+cd besobs
+npm install
+bower --allow-root install
+chown -R www-data .
+service besobs stop
+service besobs start
+service apache2 reload
+```
