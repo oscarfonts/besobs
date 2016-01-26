@@ -3,7 +3,7 @@
  */
 define(['base64', 'jquery'], function(base64, $) {
     
-    var auth = undefined;
+    var auth;
     var use_cache = true;
     var cache = {};
     
@@ -55,7 +55,7 @@ define(['base64', 'jquery'], function(base64, $) {
     var clearFromCache = function(url) {
         $.each(cache, function(key) {
             // Any cached entry starting with the given url...
-            if (key.indexOf(url) == 0) {
+            if (key.indexOf(url) === 0) {
                 // ...is deleted from the cache
                 delete cache[key];
             }

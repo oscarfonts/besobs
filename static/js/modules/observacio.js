@@ -73,7 +73,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	    } else {
 	        console.log("Geolocation is not supported by this browser.");
 	    }
-	}	
+	}
 	
 	// everything is hidden until loaded
 	showPage("login");
@@ -183,7 +183,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	      $.each(data, function( key, val ) {
 		    specieList.append('<option value="' + val + '">' + val + '</option>');
 		  });
-	    })
+	    });
 	});
 	
 });

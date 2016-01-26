@@ -55,7 +55,7 @@ router.post("*", function (req, res, next) {
 	  	  //we won't send the error, just log and continue to the next module. The file is not required
 	  	  console.log(error);
 		  //res.status(500).send(error);
-	  };
+	  }
 	  
 	  function fileError(error) {
 	  	  sendError("Error creating file: " + error); 

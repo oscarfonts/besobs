@@ -56,7 +56,7 @@ var connect = function (asGeoJSON) {
         };
 
         if (asGeoJSON) {
-            params["api_url"] = "https://" + secret.USER + ".cartodb.com/api/v2/sql?format=GeoJSON";
+            params.api_url = "https://" + secret.USER + ".cartodb.com/api/v2/sql?format=GeoJSON";
         }
 
         var client = new cartodb(params);
@@ -84,7 +84,7 @@ var query = function (sql, params, asGeoJSON) {
         };
 
         connect(asGeoJSON).then(query);
-    })
+    });
 };
 
 var success = function (data) {
@@ -101,7 +101,7 @@ router.get('/', function (req, res) {
     function parse(data) {
         var tables = [];
         for (var i in data.rows) {
-            var table = data.rows[i]["cdb_usertables"];
+            var table = data.rows[i].cdb_usertables;
             tables.push({
                 name: table,
                 url: getUrl(req) + table
@@ -139,13 +139,13 @@ router.post('/:table', function (req, res) {
     var table = escape2(req.params.table);
     var kv = parseGeoJSONRequest(JSON.parse(req.body));
     // Overwrite username, take the logged one
-    kv['username']= req.user;
+    kv.username = req.user;
     
     var sql = "INSERT INTO " + table + " (" + kv.keys.join(", ") + ") VALUES (" + kv.values.join(", ") + ") RETURNING cartodb_id";
 
     var parse = function (data) {
         var response = data.rows[0];
-        response.url = getUrl(req) + data.rows[0]["cartodb_id"];
+        response.url = getUrl(req) + data.rows[0].cartodb_id;
         res.send(response);
     };
 
