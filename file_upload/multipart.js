@@ -16,10 +16,18 @@ router.post("*", function (req, res, next) {
     form.parse(req, function(err, fields, files) {
 
       if (err) {
-        console.log(err);
-        next(); // go to the next function to see if the request is not a multipart
+        sendError(err);
       }
-      var geojson = JSON.parse(fields.geojson[0]);
+      
+      var geojson;
+      if(fields.hasOwnProperty('geojson') && Array.isArray(fields.geojson) && fields.geojson.length) {
+      	 try {
+      	 	// we use first element of the array (if many)
+		    geojson = JSON.parse(fields.geojson[0]);
+		 } catch(e) {
+		    sendError(e);
+		 }
+	  }
             
       // otherwise we can use require('path')
       function getExtension(filename) {
@@ -52,13 +60,18 @@ router.post("*", function (req, res, next) {
 	  }
 	  
 	  function sendError(error) {
-	  	  //we won't send the error, just log and continue to the next module. The file is not required
+	  	  logWarning(error);
+		  res.status(500).send(error);
+	  }
+	  
+	  function logWarning(error) {
+	  	  //we won't send the error, just log
 	  	  console.log(error);
-		  //res.status(500).send(error);
 	  }
 	  
 	  function fileError(error) {
-	  	  sendError("Error creating file: " + error); 
+	  	  // without a file, we still want to store the geojson
+	  	  logWarning("Error creating file: " + error);  
 	  }
       
       // manage image
@@ -71,7 +84,6 @@ router.post("*", function (req, res, next) {
 	      
       	  copyFile(file.path, conf.UPLOAD_DIR +  filename, fileError);
 	      geojson.features[0].properties.image = conf.PUBLIC_URL + conf.UPLOAD_URL + filename;
-
 	  }
 	  
       req.body = JSON.stringify(geojson);
