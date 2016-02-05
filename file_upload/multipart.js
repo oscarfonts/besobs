@@ -70,8 +70,8 @@ router.post("*", function (req, res, next) {
 	  }
 	  
 	  function fileError(error) {
-	  	  // without a file, we still want to store the geojson
-	  	  logWarning("Error creating file: " + error);  
+	  	  // without a file, the app mustn't crash or stop
+	  	  if(error) logWarning("Error creating file: " + error);  
 	  }
       
       // manage image
