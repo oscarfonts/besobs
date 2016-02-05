@@ -90,13 +90,13 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	});
 	
 	var loginOK = function(response) {
-		if(!response) alert("Didn't return anything!");
+		if(!response) showLoginError("Error en consultar usuari i contrassenya. Torneu-ho a provar si us plau.");
 		else {
 			if(response.login == "OK") {
 				showPage("observacio");
 				$("#userId").val($("#inputUser").val());
 			} else {
-				alert("Wrong user/password");
+				showLoginError("Error en consultar usuari i contrassenya. Torneu-ho a provar si us plau.");
 			}
 		}
 	};
@@ -107,9 +107,17 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
         } else {
             message = "S'ha produït un error en comprovar l'usuari.<br/>Contacteu amb l'administrador.";
         }
-        $("#loginError").html('<div class="alert alert-danger">'+message+'</div>');
+        showLoginError(message);
         http.auth.clear();
-    }	
+    }
+    
+    function showLoginError(message) {
+    	$("#loginError").html('<div class="alert alert-danger">'+message+'</div>');
+    }
+    
+    function showModal(div, msg) {
+    	$(div).modal("show").find(".modal-body").html(msg);
+    }
 
 	$("#observacioForm").on("submit", function(event) {
 		/* stop form from submitting normally */
@@ -128,10 +136,10 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		data.append("geojson", JSON.stringify(asGeoJSON($(this).serializeArray())));
 
 		http.post("api/observacions", data).then(function(response) {
-				if(!response) alert("Didn't return anything!");
-				else $("#modalSuccess").modal("show");
+				if(!response) showModal("#modalSuccess", "No s'ha pogut inserir la observació. Disculpeu les molèsties.");
+				else showModal("#modalSuccess", "La observació s'ha inserit correctament.");
 			}, function(error){
-				alert("There was an error " + error.code + ": " + error.error);
+				showModal("#modalSuccess", "S'ha produït un error " + error.code + " en connectar amb el servidor: " + error.error + ". No s'ha pogut inserir la observació. Disculpeu les molèsties.");
 		});
 	});
 	
