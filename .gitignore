@@ -1,6 +1,6 @@
 node_modules/
-cartodb/secret.json
+conf/secret.json
 auth/users.db
-file_upload/uploads
+data/
 static/js/lib/
 .idea/
