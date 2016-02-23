@@ -1,7 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     cartodb = require('cartodb'),
-    secret = require('./secret.js'),
+    secret = require('./secret.json'),
     Promise = require('promise');
 
 var router = express.Router();
@@ -52,7 +52,7 @@ var connect = function (asGeoJSON) {
     return new Promise(function (fulfill) {
         var params = {
             user: secret.USER,
-            api_key: secret.API_KEY
+            api_key: secret.API_KEY /* you can find it in your cartodb dashboard: https://YOURUSER.cartodb.com/your_apps/api_key */
         };
 
         if (asGeoJSON) {
