@@ -2,7 +2,7 @@ var express = require('express'),
     multiparty = require('multiparty'),
     shortid = require('shortid'),
     fs = require('fs'),
-    conf = require('./conf.js');
+    conf = require('./conf.json');
 
 var router = express.Router();
 

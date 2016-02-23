@@ -3,7 +3,7 @@ var express = require('express'),
     authenticate = require('./auth/authenticate'),
     cartodb_api = require('./cartodb/api'),
     file_upload = require('./file_upload/multipart'),
-    conf = require('./file_upload/conf.js');
+    conf = require('./file_upload/conf.json');
 
 var app = express();
 
