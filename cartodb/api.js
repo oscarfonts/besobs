@@ -1,7 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     cartodb = require('cartodb'),
-    secret = require('./secret.json'),
+    secret = require('../conf/secret.json'),
     Promise = require('promise');
 
 var router = express.Router();
