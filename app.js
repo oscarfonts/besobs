@@ -22,7 +22,7 @@ app.use('/api', authenticate);
 app.use('/api', file_upload);
 //the uploaded files have to be public
 // we cannot put it into 'file_upload' module because we don't want it inside /api (and require login)
-app.use('/' + conf.UPLOAD_URL, express.static(conf.UPLOAD_DIR));
+app.use('/' + conf.UPLOAD_URL, express.static(conf.DATA_DIR + "/" + conf.UPLOAD_DIR));
 
 // Expose cartodb as API
 app.use('/api', cartodb_api);
