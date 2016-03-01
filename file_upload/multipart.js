@@ -2,7 +2,8 @@ var express = require('express'),
     multiparty = require('multiparty'),
     shortid = require('shortid'),
     fs = require('fs'),
-    conf = require('../conf/conf.json');
+    conf = require('../conf/conf.json'),
+    path = require('path');
 
 var router = express.Router();
 
@@ -82,7 +83,7 @@ router.post("*", function (req, res, next) {
 	      }
 	      var filename = shortid.generate() + getExtension(file.path);
 	      
-      	  copyFile(file.path, conf.UPLOAD_DIR +  filename, fileError);
+      	  copyFile(file.path, path.join(__dirname, "../", conf.DATA_DIR, conf.UPLOAD_DIR, filename), fileError);
 	      geojson.features[0].properties.image = conf.PUBLIC_URL + conf.UPLOAD_URL + filename;
 	  }
 	  

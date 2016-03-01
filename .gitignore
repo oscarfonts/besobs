@@ -1,6 +1,5 @@
 node_modules/
 conf/secret.json
-auth/users.db
-data/
+data/users.db
 static/js/lib/
 .idea/

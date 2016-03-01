@@ -5,6 +5,11 @@ var express = require('express'),
     file_upload = require('./file_upload/multipart'),
     conf = require('./conf/conf.json');
 
+var datadir = process.argv.slice(2); // datadir can be passed as an argument
+if (datadir.length) {
+    conf.DATA_DIR = datadir[0];
+}
+
 var app = express();
 
 // Add cross-origin headers
