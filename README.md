@@ -25,9 +25,9 @@ Note an users database will be created on ```auth/users.db```.
 
 Create the `cartodb/secret.js` file and put your CartoDB credentials (username and api key). Use `cartodb/secret.js.example` as model.
 
-Run using node:
+Run using node (we can optionally specify a datadir for users database):
 
-    node server.js
+    node server.js <datadir>
 
 Then access through your browser:
 
