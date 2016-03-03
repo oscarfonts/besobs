@@ -23,7 +23,7 @@ Create some users:
 
 Note an users database will be created on ```DATA_DIR/users.db```.
 
-Create the `DATA_DIR/cartodb.json` file and put your CartoDB credentials (username and api key). Use `DATA_DIR/cartodb.sample.json` as model.
+Create the `DATA_DIR/config.json` file and put your CartoDB credentials and public base URL. Use `DATA_DIR/config.sample.json` as model.
 
 Run using node (we can optionally specify a different location for DATA_DIR):
 
@@ -63,9 +63,9 @@ Get the dependencies:
     npm install
     bower install
 
-Create the `DATA_DIR/cartodb.json` file.
+Create the `DATA_DIR/config.json` file.
 
-Add some users with the creat_user.js helper (see above).
+Add some users with the `create_user.js` script.
 
 Change permissions over files:
 
@@ -107,4 +107,3 @@ service besobs stop
 service besobs start
 service apache2 reload
 ```
-    

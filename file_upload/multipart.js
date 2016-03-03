@@ -85,7 +85,7 @@ router.post("*", function (req, res, next) {
 	      var filename = shortid.generate() + getExtension(file.path);
       	  copyFile(file.path, path.resolve(config.data_dir, "images", filename), fileError);
 
-	      geojson.features[0].properties.image = config.host(req) + "/images/"  + filename;
+	      geojson.features[0].properties.image = config.base_url + "images/"  + filename;
 	  }
 	  
       req.body = JSON.stringify(geojson);
