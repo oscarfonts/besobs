@@ -1,3 +1,7 @@
+var config = require("../config");
+
+config.data_dir = "../DATA_DIR";
+
 var users = require("./users");
 
 if(process.argv.length != 4) {

@@ -1,5 +1,5 @@
 node_modules/
-conf/secret.json
-data/users.db
+DATA_DIR/cartodb.json
+DATA_DIR/users.db
 static/js/lib/
 .idea/

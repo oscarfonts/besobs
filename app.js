@@ -1,16 +1,13 @@
 var express = require('express'),
+    config = require('./config'),
     cors = require('./cors/cors'),
     authenticate = require('./auth/authenticate'),
     cartodb_api = require('./cartodb/api'),
-    file_upload = require('./file_upload/multipart'),
-    conf = require('./conf/conf.json');
-
-var datadir = process.argv.slice(2); // datadir can be passed as an argument
-if (datadir.length) {
-    conf.DATA_DIR = datadir[0];
-}
+    file_upload = require('./file_upload/multipart');
 
 var app = express();
+
+app.enable('trust proxy');
 
 // Add cross-origin headers
 app.use('/api', cors);
@@ -20,9 +17,10 @@ app.use('/api', authenticate);
 
 // Manage file upload (multipart data)
 app.use('/api', file_upload);
+
 //the uploaded files have to be public
 // we cannot put it into 'file_upload' module because we don't want it inside /api (and require login)
-app.use('/' + conf.UPLOAD_URL, express.static(conf.DATA_DIR + "/" + conf.UPLOAD_DIR));
+app.use('/images', express.static(config.data_dir + "/images"));
 
 // Expose cartodb as API
 app.use('/api', cartodb_api);

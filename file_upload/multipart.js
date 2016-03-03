@@ -1,8 +1,8 @@
 var express = require('express'),
+	config = require('../config'),
     multiparty = require('multiparty'),
     shortid = require('shortid'),
     fs = require('fs'),
-    conf = require('../conf/conf.json'),
     path = require('path');
 
 var router = express.Router();
@@ -81,10 +81,11 @@ router.post("*", function (req, res, next) {
 	      if(files.file[0].size > maxPhotoSize) {
 	      	sendError("Maximum photo size of " + maxPhotoSize + " exceeded");
 	      }
+
 	      var filename = shortid.generate() + getExtension(file.path);
-	      
-      	  copyFile(file.path, path.join(__dirname, "../", conf.DATA_DIR, conf.UPLOAD_DIR, filename), fileError);
-	      geojson.features[0].properties.image = conf.PUBLIC_URL + conf.UPLOAD_URL + filename;
+      	  copyFile(file.path, path.resolve(config.data_dir, "images", filename), fileError);
+
+	      geojson.features[0].properties.image = config.host(req) + "/images/"  + filename;
 	  }
 	  
       req.body = JSON.stringify(geojson);

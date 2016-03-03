@@ -3,7 +3,7 @@
 
 ## Install and run
 
-Requires git, node and npm.
+Requires git, node 4.x and npm.
 
 Clone this project:
 
@@ -21,13 +21,13 @@ Create some users:
 
     node auth/create_user.js <username> <password>
 
-Note an users database will be created on ```auth/users.db```.
+Note an users database will be created on ```DATA_DIR/users.db```.
 
-Create the `cartodb/secret.js` file and put your CartoDB credentials (username and api key). Use `cartodb/secret.js.example` as model.
+Create the `DATA_DIR/cartodb.json` file and put your CartoDB credentials (username and api key). Use `DATA_DIR/cartodb.sample.json` as model.
 
-Run using node (we can optionally specify a datadir for users database):
+Run using node (we can optionally specify a different location for DATA_DIR):
 
-    node server.js <datadir>
+    node server.js [<data_dir_location>]
 
 Then access through your browser:
 
@@ -63,15 +63,9 @@ Get the dependencies:
     npm install
     bower install
 
-Create the `cartodb/secret.js` file.
+Create the `DATA_DIR/cartodb.json` file.
 
-Add some users:
-
-    node auth/create_user.js <username> <password>
-
-Create the photo upload dir:
-
-    mkdir -p file_upload/uploads
+Add some users with the creat_user.js helper (see above).
 
 Change permissions over files:
 
@@ -94,7 +88,7 @@ Then restart apache:
 
 And access:
 
-    http://demo.geomati.co/besobs/
+    http://demo.fonts.cat/besobs/
 
 ### Server update script
 
@@ -102,9 +96,7 @@ And access:
 wget https://github.com/oscarfonts/besobs/archive/master.zip
 unzip master.zip
 rm master.zip
-cp besobs/cartodb/secret.js besobs-master/cartodb/
-cp besobs/auth/users.db besobs-master/auth/
-cp -r besobs/file_upload/uploads besobs-master/file_upload/
+cp -r besobs/DATA_DIR besobs-master/
 mv besobs besobs-old
 mv besobs-master besobs
 cd besobs
@@ -115,3 +107,4 @@ service besobs stop
 service besobs start
 service apache2 reload
 ```
+    

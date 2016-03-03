@@ -1,7 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     cartodb = require('cartodb'),
-    secret = require('../conf/secret.json'),
+    config = require('../config'),
     Promise = require('promise');
 
 var router = express.Router();
@@ -9,7 +9,6 @@ var router = express.Router();
 // Parse body as json
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: false}));
-
 
 var escape1 = function (string) {
     return "'" + string.replace("'", "''") + "'";
@@ -39,24 +38,12 @@ var parseGeoJSONRequest = function(geojson) {
     };
 };
 
-var getUrl = function (req) {
-    var url = req.protocol + "://" + req.get('host');
-    url += req.originalUrl;
-    if (url[url.length - 1] != "/") {
-        url += "/";
-    }
-    return url;
-};
-
 var connect = function (asGeoJSON) {
     return new Promise(function (fulfill) {
-        var params = {
-            user: secret.USER,
-            api_key: secret.API_KEY /* you can find it in your cartodb dashboard: https://YOURUSER.cartodb.com/your_apps/api_key */
-        };
+        var params = Object.assign({}, config.cartodb);
 
         if (asGeoJSON) {
-            params.api_url = "https://" + secret.USER + ".cartodb.com/api/v2/sql?format=GeoJSON";
+            params.api_url = "https://" + config.cartodb.user + ".cartodb.com/api/v2/sql?format=GeoJSON";
         }
 
         var client = new cartodb(params);
@@ -104,7 +91,7 @@ router.get('/', function (req, res) {
             var table = data.rows[i].cdb_usertables;
             tables.push({
                 name: table,
-                url: getUrl(req) + table
+                url: config.get_url(req) + table
             });
         }
         res.send({tables: tables});
@@ -145,7 +132,7 @@ router.post('/:table', function (req, res) {
 
     var parse = function (data) {
         var response = data.rows[0];
-        response.url = getUrl(req) + data.rows[0].cartodb_id;
+        response.url = config.get_url(req) + data.rows[0].cartodb_id;
         res.send(response);
     };
 
@@ -169,7 +156,7 @@ router.put('/:table/:id', function (req, res) {
 
     var parse = function (data) {
         var response = data.rows[0];
-        response.url = getUrl(req);
+        response.url = config.get_url(req);
         res.send(response);
     };
 
