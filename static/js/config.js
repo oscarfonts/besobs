@@ -6,7 +6,7 @@ var require = (function() {
 		baseUrl: HERE + "modules/",
 		paths: {
 			"jquery": LIB_PATH + "jquery/dist/jquery.min",
-			"bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min",
+			"bootstrap": "//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min",
             "bootstrap-datepicker": LIB_PATH + "bootstrap-datepicker/dist/js/bootstrap-datepicker.min",
             "bootstrap-datepicker-ca": LIB_PATH + "bootstrap-datepicker/js/locales/bootstrap-datepicker.ca",
 			"leaflet": LIB_PATH + "leaflet/dist/leaflet",
@@ -14,7 +14,7 @@ var require = (function() {
 		},
 		shim: {
 			"bootstrap": {
-				deps: ["jquery", "css!//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/united/bootstrap.min.css"]
+				deps: ["jquery"]
 			},
             "bootstrap-datepicker": {
 				deps: ["bootstrap", "css!" + LIB_PATH + "bootstrap-datepicker/dist/css/bootstrap-datepicker.css"]
@@ -29,4 +29,3 @@ var require = (function() {
 		}
 	};
 })();
-

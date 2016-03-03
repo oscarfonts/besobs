@@ -11,7 +11,9 @@ if(process.argv.length != 4) {
     var name = process.argv[2],
         password = process.argv[3];
 
-    users.insert(name, password);
-
-    console.log("User '" + name + "' created successfully.");
+    users.create(name, password, function(id) {
+        console.log("User '" + name + "' created successfully with id = " + id);
+    }, function(err) {
+        console.error(err);
+    });
 }

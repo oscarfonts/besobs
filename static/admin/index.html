@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css"/>
+    <title>Administració d'Usuaris</title>
+</head>
+<body>
+<div class="container">
+    <h1>Administració d'Usuaris</h1>
+    <div class="row">
+        <div class="col-sm-4 col-lg-4" id="left">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Llistat d'usuaris</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group" id="userlist">
+                    </div>
+                    <span id="new" type="button" class="btn btn-info pull-right"><span class="glyphicon glyphicon-plus"></span> Nou usuari</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 col-lg-8" id="right">
+            <div class="panel panel-default" id="editPanel" style="display: none;">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Edita Usuari Existent</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" autocomplete="off" id="editUser">
+                        <input type="text" style="display:none">
+                        <input type="password" style="display:none">
+                        <input type="text" autocomplete="off" style="display:none" id="editId" name="id">
+                        <div class="form-group">
+                            <label for="editName" class="col-sm-2 control-label">Nom</label>
+                            <div class="col-sm-10">
+                                <input type="text" autocomplete="off" class="form-control" id="editName" name="name" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPassword" class="col-sm-2 control-label">Contrasenya</label>
+                            <div class="col-sm-10">
+                                <input type="password" autocomplete="off" class="form-control" id="editPassword" name="password" placeholder="Contrasenya">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <span type="button" id="deleteUser" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Elimina</span>
+                                <span type="button" id="updateUser" class="btn btn-success pull-right"><span class="glyphicon glyphicon-ok"></span> Modifica</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default" id="newPanel" style="display: none;">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Crea Nou Usuari</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" autocomplete="off" id="newUser">
+                        <input type="text" style="display:none">
+                        <input type="password" style="display:none">
+                        <div class="form-group">
+                            <label for="newName" class="col-sm-2 control-label">Nom</label>
+                            <div class="col-sm-10">
+                                <input type="text" autocomplete="off" class="form-control" id="newName" name="name" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-2 control-label">Contrasenya</label>
+                            <div class="col-sm-10">
+                                <input type="password" autocomplete="off" class="form-control" id="newPassword" name="password" placeholder="Contrasenya">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <span type="button" id="createUser" class="btn btn-success pull-right"><span class="glyphicon glyphicon-ok"></span> Crea</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/config.js"></script>
+<script src="../js/lib/requirejs/require.js" data-main="admin"></script>
+</body>
+</html>

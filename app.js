@@ -2,6 +2,7 @@ var express = require('express'),
     config = require('./config'),
     cors = require('./cors/cors'),
     authenticate = require('./auth/authenticate'),
+    admin = require('./auth/admin'),
     cartodb_api = require('./cartodb/api'),
     file_upload = require('./file_upload/multipart');
 
@@ -27,6 +28,12 @@ app.use('/api', cartodb_api);
 
 // Static contents
 app.use(express.static('static'));
+
+// Add authentication to Admin
+app.use('/admin', authenticate);
+
+// Add admin page
+app.use('/admin', admin);
 
 // Page not found handler
 app.use(function (req, res) {
