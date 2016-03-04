@@ -92,7 +92,7 @@ define(['jquery', 'http', 'bootstrap'], function($, http) {
 
     $("#logoutLink").click(function() {
         http.auth.clear();
-        http.get("../api/logout").then(function() {
+        http.get("../api/logout/").then(function() {
             location = "../";
         },function() {
             location = "../";

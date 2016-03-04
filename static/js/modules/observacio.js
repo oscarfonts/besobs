@@ -91,7 +91,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 
 	function logout() {
 		http.auth.clear();
-		http.get("../api/logout").then(function() {
+		http.get("../api/logout/").then(function() {
             location = "../";
         }, function() {
             location = "../";
