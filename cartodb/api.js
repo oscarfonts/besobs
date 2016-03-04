@@ -101,7 +101,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/:table', function (req, res) {
-    // TODO Filtrar por req.user
+    // TODO Filtrar por req.user.name
 
     var sql = "SELECT * FROM {table}";
     var params = {table: escape2(req.params.table)};
@@ -110,7 +110,7 @@ router.get('/:table', function (req, res) {
 });
 
 router.get('/:table/:id', function (req, res) {
-    // TODO Filtrar por req.user
+    // TODO Filtrar por req.user.name
 
     var sql = "SELECT * FROM {table} WHERE cartodb_id={id}";
     var params = {
@@ -126,7 +126,7 @@ router.post('/:table', function (req, res) {
     var table = escape2(req.params.table);
     var kv = parseGeoJSONRequest(JSON.parse(req.body));
     // Overwrite username, take the logged one
-    kv.username = req.user;
+    kv.username = req.user.name;
     
     var sql = "INSERT INTO " + table + " (" + kv.keys.join(", ") + ") VALUES (" + kv.values.join(", ") + ") RETURNING cartodb_id";
 
@@ -140,7 +140,7 @@ router.post('/:table', function (req, res) {
 });
 
 router.put('/:table/:id', function (req, res) {
-    // TODO Filtrar por -e insertar- req.user
+    // TODO Filtrar por -e insertar- req.user.name
 
     var table = escape2(req.params.table);
     var id = escape1(req.params.id);
@@ -164,7 +164,7 @@ router.put('/:table/:id', function (req, res) {
 });
 
 router.delete('/:table/:id', function (req, res) {
-    // TODO Filtrar por req.user
+    // TODO Filtrar por req.user.name
 
     var table = escape2(req.params.table);
     var id = escape1(req.params.id);

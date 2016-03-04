@@ -19,21 +19,21 @@ app.use('/api', authenticate);
 // Manage file upload (multipart data)
 app.use('/api', file_upload);
 
-//the uploaded files have to be public
-// we cannot put it into 'file_upload' module because we don't want it inside /api (and require login)
-app.use('/images', express.static(config.data_dir + "/images"));
-
 // Expose cartodb as API
 app.use('/api', cartodb_api);
-
-// Static contents
-app.use(express.static('static'));
 
 // Add authentication to Admin
 app.use('/admin', authenticate);
 
 // Add admin page
 app.use('/admin', admin);
+
+//the uploaded files have to be public
+// we cannot put it into 'file_upload' module because we don't want it inside /api (and require login)
+app.use('/images', express.static(config.data_dir + "/images"));
+
+// Static contents
+app.use(express.static('static'));
 
 // Page not found handler
 app.use(function (req, res) {

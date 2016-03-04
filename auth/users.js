@@ -4,7 +4,7 @@ var crypto = require('crypto'),
     config = require('../config');
 
 var db = new sqlite3.Database(path.join(config.data_dir, "users.db"));
-console.log(config.data_dir);
+console.log("Data dir is " + config.data_dir);
 
 var hash = function(password) {
     var salt = 'kd8c2YYSuEjQsEWc8KQFCGHx';
@@ -13,19 +13,24 @@ var hash = function(password) {
 
 var users = {
     list: function(onSuccess, onError) {
-        db.all("SELECT id, name FROM user", function(err, rows) {
+        db.all("SELECT id, name, isAdmin FROM user", function(err, rows) {
             if(!err && onSuccess) {
+                rows = rows.map(function(row) {
+                    row.isAdmin = (row.isAdmin == 1);
+                    return row;
+                });
                 onSuccess(rows);
             } else if(err && onError) {
                 onError(err);
             }
         });
     },
-    create: function(username, password, onSuccess, onError) {
-        db.run("CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT)", function() {
-            db.run("INSERT INTO user(name, password) VALUES ($name, $password)", {
+    create: function(username, password, isAdmin, onSuccess, onError) {
+        db.run("CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, isAdmin BOOLEAN)", function() {
+            db.run("INSERT INTO user(name, password, isAdmin) VALUES ($name, $password, $isAdmin)", {
                 $name: username,
-                $password: hash(password)
+                $password: hash(password),
+                $isAdmin: isAdmin
             }, function(err) {
                 if(!err && onSuccess) {
                     onSuccess(this.lastID);
@@ -36,21 +41,23 @@ var users = {
         });
     },
     retrieve: function(id, onSuccess, onError) {
-        db.get("SELECT id, name FROM user WHERE id = $id", {
+        db.get("SELECT id, name, isAdmin FROM user WHERE id = $id", {
             $id: id
         }, function(err, row) {
             if(!err && onSuccess) {
+                row.isAdmin = (row.isAdmin == 1);
                 onSuccess(row);
             } else if(err && onError) {
                 onError(err);
             }
         });
     },
-    update: function(id, username, password, onSuccess, onError) {
-        db.run("UPDATE user SET name = $name, password = $password WHERE id = $id", {
+    update: function(id, username, password, isAdmin, onSuccess, onError) {
+        db.run("UPDATE user SET name = $name, password = $password, isAdmin = $isAdmin WHERE id = $id", {
             $id: id,
             $name: username,
-            $password: hash(password)
+            $password: hash(password),
+            $isAdmin: isAdmin
         }, function(err) {
             if(!err && onSuccess) {
                 onSuccess(this.changes);
@@ -71,12 +78,13 @@ var users = {
         });
     },
     check: function(username, password, callback) {
-        db.get("SELECT name FROM user WHERE name = $name AND password = $password", {
+        db.get("SELECT id, name, isAdmin FROM user WHERE name = $name AND password = $password", {
             $name: username,
             $password: hash(password)
         }, function(err, row) {
             if (row) {
-                callback(row.name);
+                row.isAdmin = (row.isAdmin == 1);
+                callback(row);
             } else {
                 callback(false);
             }

@@ -7,9 +7,9 @@ var realm = "API";
 
 passport.use(new BasicStrategy({
         realm: realm
-    }, function (user, password, done) {
-        users.check(user, password, function(name) {
-            return done(null, name);
+    }, function (login, password, done) {
+        users.check(login, password, function(user) {
+            return done(null, user);
         });
     })
 );
@@ -41,18 +41,23 @@ router.put('*', authenticate);
 router.delete('*', authenticate);
 
 router.get('/logout', function (req, res) {
-    res.set('WWW-Authenticate', 'Basic realm=' + realm);
-    return res.sendStatus(401);
+    var challenge = 'Basic realm=' + realm;
+    if(req.get('x-requested-with') == 'XMLHttpRequest') {
+        // Except in case of AJAX calls, where we don't want browsers show their bundled login dialog
+        challenge = 'x' + challenge;
+    }
+    res.set('WWW-Authenticate', challenge);
+    return res.status(401).end();
 });
 
 router.post('/login', function (req, res) {
-	console.log(req.user + " logged in");
+	console.log(req.user.name + " logged in");
 	// we don't need to recheck user and pwd, as passport already did: if you're here, you're logged in 
 	/*users.check(req.user, req.password, function(result) {
 		if(result !== false) res.send({login: 'OK'}); 
 		else res.send({login: 'KO'});
 	}};*/
-	res.send({login: 'OK'});
+	res.send({login: 'OK', user: req.user});
 });
 
 module.exports = router;

@@ -7,6 +7,15 @@ var router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: false}));
 
+// Filter admins
+router.use(function(req, res, next) {
+    if(!req.user.isAdmin) {
+        return res.status(401).end();
+    } else {
+        next();
+    }
+});
+
 // List
 router.get('/users', function (req, res) {
     users.list(function(userList) {
@@ -18,7 +27,7 @@ router.get('/users', function (req, res) {
 
 // Create
 router.post('/users', function (req, res) {
-    users.create(req.body.name, req.body.password, function(newId) {
+    users.create(req.body.name, req.body.password, req.body.isAdmin, function(newId) {
         res.send({id: newId});
     }, function(error) {
         res.status(500).send(error);
@@ -36,7 +45,7 @@ router.get('/users/:id', function (req, res) {
 
 // Update
 router.put('/users/:id', function (req, res) {
-    users.update(req.params.id, req.body.name, req.body.password, function(itemsUpdated) {
+    users.update(req.params.id, req.body.name, req.body.password, req.body.isAdmin, function(itemsUpdated) {
         res.json({"updated": itemsUpdated});
     }, function(error) {
         res.status(500).send(error);

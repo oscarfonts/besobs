@@ -1,7 +1,5 @@
 define(['jquery', 'http', 'bootstrap'], function($, http) {
 
-    http.cache.disable();
-
     var showError = function(error) {
         console.error(error);
         alert("Hi ha hagut un error");
@@ -29,6 +27,7 @@ define(['jquery', 'http', 'bootstrap'], function($, http) {
         $("#editPanel").hide();
         $("#newName").val("");
         $("#newPassword").val("");
+        $('#newIsAdmin').prop('checked', false);
         $("#newPanel").show();
     };
 
@@ -37,6 +36,7 @@ define(['jquery', 'http', 'bootstrap'], function($, http) {
         $("#editId").val(data.id);
         $("#editName").val(data.name);
         $("#editPassword").val("");
+        $('#editIsAdmin').prop('checked', data.isAdmin);
         $("#editPanel").show();
     };
 
@@ -45,10 +45,11 @@ define(['jquery', 'http', 'bootstrap'], function($, http) {
         http.get("users").then(showUserList, showError);
     };
 
-    var createUser = function(name, password) {
+    var createUser = function(name, password, isAdmin) {
         http.post("users", {
             name: name,
-            password: password
+            password: password,
+            isAdmin: isAdmin
         }).then(listUsers, showError); // TODO show some status info
     };
 
@@ -56,10 +57,11 @@ define(['jquery', 'http', 'bootstrap'], function($, http) {
         http.get("users/"+id).then(showExistingUser, showError);
     };
 
-    var updateUser = function(id, name, password) {
+    var updateUser = function(id, name, password, isAdmin) {
         http.put("users/"+id, {
             name: name,
-            password: password
+            password: password,
+            isAdmin: isAdmin
         }).then(listUsers, showError); // TODO show some status info
     };
 
@@ -71,16 +73,54 @@ define(['jquery', 'http', 'bootstrap'], function($, http) {
     $("#new").click(showNewUserForm);
 
     $("#createUser").click(function() {
-        createUser($("#newName").val(), $("#newPassword").val());
+        var mandatoryFields = ["newName", "newPassword"];
+		var checked = checkMandatory(mandatoryFields, true);
+        if(checked.indexOf(false) != -1) return false;
+        createUser($("#newName").val(), $("#newPassword").val(), $('#newIsAdmin').prop('checked'));
     });
 
     $("#updateUser").click(function() {
-        updateUser($("#editId").val(), $("#editName").val(), $("#editPassword").val());
+        var mandatoryFields = ["editName", "editPassword"];
+		var checked = checkMandatory(mandatoryFields, true);
+        if(checked.indexOf(false) != -1) return false;
+        updateUser($("#editId").val(), $("#editName").val(), $("#editPassword").val(), $('#editIsAdmin').prop('checked'));
     });
 
     $("#deleteUser").click(function() {
         deleteUser($("#editId").val());
     });
 
+    $("#logoutLink").click(function() {
+        http.auth.clear();
+        http.get("../api/logout").then(function() {
+            location = "../";
+        },function() {
+            location = "../";
+        });
+    });
+
+    var checkMandatory = function(fields, scroll) {
+		var result = [];
+		for (var i = 0; i < fields.length; i ++) {
+			var field = $("#" + fields[i]);
+			if(!field.val()) {
+				field.parent().addClass("has-error");
+				//if first result, scroll there
+				if(scroll && result.indexOf(false) == -1) {
+					$('html, body').animate({
+				        scrollTop: field.offset().top
+				    }, 1000);
+				}
+				result[i] = false;
+			} else {
+				field.parent().removeClass("has-error");
+				result[i] = true;
+			}
+		}
+		return result;
+	};
+
+    // Initialization
+    http.cache.disable();
     listUsers();
 });

@@ -19,7 +19,7 @@ Install bower dependencies:
 
 Create some users:
 
-    node auth/create_user.js <username> <password>
+    node auth/create_user.js <username> <password> [<isAdmin>]
 
 Note an users database will be created on ```DATA_DIR/users.db```.
 

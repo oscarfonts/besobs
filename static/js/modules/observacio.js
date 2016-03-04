@@ -86,15 +86,30 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		// we set the user and pwd
 		http.auth.set($("#inputUser").val(), $("#inputPassword").val());
 		
-		http.post("api/login/").then(loginOK, loginKO);
+		http.post("../api/login/").then(loginOK, loginKO);
 	});
+
+	function logout() {
+		http.auth.clear();
+		http.get("../api/logout").then(function() {
+            location = "../";
+        }, function() {
+            location = "../";
+        });
+	};
 	
 	var loginOK = function(response) {
 		if(!response) showLoginError("Error en consultar usuari i contrassenya. Torneu-ho a provar si us plau.");
 		else {
 			if(response.login == "OK") {
 				showPage("observacio");
-				$("#userId").val($("#inputUser").val());
+				$("#userId").val(response.user.name);
+				$("#logoutLink").text("Surt (" + response.user.name + ")").click(logout).show();
+				if(response.user.isAdmin) {
+					$("#adminLink").show();
+				}
+				$('#dataId').datepicker('setDate', new Date());
+				$('#dataId').datepicker('update');
 			} else {
 				showLoginError("Error en consultar usuari i contrassenya. Torneu-ho a provar si us plau.");
 			}
@@ -135,7 +150,7 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 		data.append("file", fileInput[0].files[0]);
 		data.append("geojson", JSON.stringify(asGeoJSON($(this).serializeArray())));
 
-		http.post("api/observacions", data).then(function(response) {
+		http.post("../api/observacions", data).then(function(response) {
 				if(!response) showModal("#modalSuccess", "No s'ha pogut inserir la observació. Disculpeu les molèsties.");
 				else showModal("#modalSuccess", "La observació s'ha inserit correctament.");
 			}, function(error){
@@ -186,12 +201,16 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 	//species list in plain JSON
 	var specieList = $('select#specieId');
 	$('select#animalClassId').change(function () {
-		$.getJSON('js/json/' + this.value + '.json',function(data){
+		$.getJSON('../js/json/' + this.value + '.json',function(data){
 		  specieList.html('');
 	      $.each(data, function( key, val ) {
 		    specieList.append('<option value="' + val + '">' + val + '</option>');
 		  });
 	    });
+	});
+
+	$("#photoId").change(function(){
+		$("#photoPath").text(this.value.split("\\").pop());
 	});
 	
 });

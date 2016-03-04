@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css"/>
+	<style>
+		.fileUpload {
+			position: relative;
+			overflow: hidden;
+			margin: 10px;
+		}
+		.fileUpload input.upload {
+			position: absolute;
+			top: 0;
+			right: 0;
+			margin: 0;
+			padding: 0;
+			font-size: 20px;
+			cursor: pointer;
+			opacity: 0;
+			filter: alpha(opacity=0);
+		}
+	</style>
+	<title>Observacions faunístiques</title>
+</head>
+<body style="padding-top:70px;display:none;">
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="../">Observacions Faunístiques</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a id="adminLink" style="display:none;" href="../admin">Admin</a></li>
+				<li><a id="logoutLink" style="display:none;" href="#">Logout</a></li>
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div>
+</nav>
+
+<div class="container">
+	<img src="../img/riulogo.jpg" class="img-responsive" alt="Logo i imatge riu"/>
+</div>
+
+<!-- Modal -->
+<div id="modalSuccess" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Observacions faunístiques</h4>
+			</div>
+			<div class="modal-body">
+				<p></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Tancar</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="container" id="loginPage">
+	<h2 class="form-signin-heading" style="text-align: center;">Introduir usuari</h2>
+	<form class="form-horizontal" id="loginForm">
+		<div class="form-group">
+			<label for="inputUser" class="col-sm-2 control-label">Usuari</label>
+			<div class="col-sm-10">
+				<input type="text" id="inputUser" class="form-control" placeholder="Usuari" required autofocus>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputPassword" class="col-sm-2 control-label">Contrasenya</label>
+			<div class="col-sm-10">
+				<input type="password" id="inputPassword" class="form-control" placeholder="Contrasenya" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div id="loginError"></div>
+				<button class="btn btn-lg btn-primary pull-right" type="submit">Entrar</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="container" id="observacioPage" style="padding-bottom:15px;display:none;">
+	<h1>Observacions faunístiques <small>Introdueix la teva observació</small></h1>
+	<form id="observacioForm">
+		<div class="form-group">
+			<label for="userId">Usuari</label>
+			<input class="form-control" id="userId" name="username" placeholder="User" value="" readonly>
+		</div>
+		<div class="form-group">
+			<label for="dataId">Data de l'observació</label>
+			<input class="form-control datepicker" name="date" id="dataId" placeholder="Data">
+		</div>
+		<div class="form-group">
+			<label for="xId">Localitació de l'observació (coord X)</label>
+			<input class="form-control" id="xId" name="x" placeholder="Introduïu les coordenades o bé moveu la icona al mapa">
+		</div>
+		<div class="form-group">
+			<label for="yId">Localitació de l'observació (coord Y)</label>
+			<input class="form-control" id="yId" name="y" placeholder="Introduïu les coordenades o bé moveu la icona al mapa">
+		</div>
+		<div class="form-group">
+			<div id="map" style="height:260px"></div>
+			<p class="help-block">Introduïu les coordenades o bé moveu la icona al mapa</p>
+		</div>
+		<div class="form-group">
+			<label for="animalClassId">Classe</label>
+			<select class="form-control" name="class" id="animalClassId" >
+				<option disabled selected> -- seleccioneu classe -- </option>
+				<option value="algues">Algues</option>
+				<option value="artro">Artròpodes</option>
+				<option value="briofits">Briòfits</option>
+				<option value="flora">Flora</option>
+				<option value="fongs">Fongs</option>
+				<option value="inv">Invertebrats</option>
+				<option value="liquens">Líquens</option>
+				<option value="vert">Vertebrats</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="specieId">Espècie</label>
+			<select class="form-control" name="species" id="specieId" >
+				<option disabled selected> -- seleccioneu classe -- </option>
+			</select>
+			<p class="help-block">Seleccioneu una classe abans de seleccionar l'espècie</p>
+		</div>
+		<div class="form-group">
+			<label for="photoId">Fotografia</label>
+			<div class="fileUpload btn btn-small btn-primary">
+				<span>Escolliu fitxer...</span>
+				<input type="file" id="photoId" class="upload" name="image"/>
+			</div>
+			<span id="photoPath"></span>
+			<p class="help-block">Pugeu una fotografia de l'animal observat.</p>
+		</div>
+		<div class="form-group">
+			<label for="notesId">Observacions</label>
+			<textarea class="form-control" rows="3" name="notes" id="notesId"></textarea>
+		</div>
+
+		<button class="btn btn-lg btn-primary pull-right" type="submit">Enviar</button>
+	</form>
+</div>
+<!-- end of observacioPage -->
+
+<script src="../js/config.js"></script>
+<script src="../js/lib/requirejs/require.js" data-main="observacio"></script>
+
+</body>
+</html>

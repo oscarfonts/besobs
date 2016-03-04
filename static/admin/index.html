@@ -7,7 +7,28 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css"/>
     <title>Administració d'Usuaris</title>
 </head>
-<body>
+<body style="padding-top:70px;">
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="../">Observacions Faunístiques</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a id="logoutLink" href="#">Surt</a></li>
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div>
+</nav>
+
 <div class="container">
     <h1>Administració d'Usuaris</h1>
     <div class="row">
@@ -19,7 +40,7 @@
                 <div class="panel-body">
                     <div class="list-group" id="userlist">
                     </div>
-                    <span id="new" type="button" class="btn btn-info pull-right"><span class="glyphicon glyphicon-plus"></span> Nou usuari</button>
+                    <span id="new" type="button" class="btn btn-info pull-right"><span class="glyphicon glyphicon-plus"></span> Nou usuari</span>
                 </div>
             </div>
         </div>
@@ -47,6 +68,16 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label style="display: inline;">
+                                        <input id="editIsAdmin" name="isAdmin" type="checkbox"> És administrador?
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
                                 <span type="button" id="deleteUser" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Elimina</span>
                                 <span type="button" id="updateUser" class="btn btn-success pull-right"><span class="glyphicon glyphicon-ok"></span> Modifica</span>
                             </div>
@@ -72,6 +103,15 @@
                             <label for="newPassword" class="col-sm-2 control-label">Contrasenya</label>
                             <div class="col-sm-10">
                                 <input type="password" autocomplete="off" class="form-control" id="newPassword" name="password" placeholder="Contrasenya">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="newIsAdmin" name="isAdmin" type="checkbox"> És administrador?
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
