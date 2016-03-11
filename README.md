@@ -16,14 +16,14 @@ Install node dependencies:
 Install bower dependencies:
 
     bower install
+    
+Create the `DATA_DIR/config.json` file and put your CartoDB credentials and public base URL. Use `DATA_DIR/config.sample.json` as model.
 
 Create some users:
 
     node auth/create_user.js <username> <password> [<isAdmin>]
 
 Note an users database will be created on ```DATA_DIR/users.db```.
-
-Create the `DATA_DIR/config.json` file and put your CartoDB credentials and public base URL. Use `DATA_DIR/config.sample.json` as model.
 
 Run using node (we can optionally specify a different location for DATA_DIR):
 
