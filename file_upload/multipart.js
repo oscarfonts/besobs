@@ -3,7 +3,8 @@ var express = require('express'),
     multiparty = require('multiparty'),
     shortid = require('shortid'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    mmm = require('mmmagic');
 
 var router = express.Router();
 
@@ -81,11 +82,23 @@ router.post("*", function (req, res, next) {
 	      if(files.file[0].size > maxPhotoSize) {
 	      	sendError("Maximum photo size of " + maxPhotoSize + " exceeded");
 	      }
+          
+          var Magic = mmm.Magic;
+          var magic = new Magic(mmm.MAGIC_MIME_TYPE);
+          magic.detectFile(file.path, function(err, result) {
+              if (err) fileError(err);
+              
+              if(result == 'image/png' || result == 'image/jpeg' || result == 'image/gif') { 
+                var filename = shortid.generate() + getExtension(file.path);
+                copyFile(file.path, path.resolve(config.data_dir, "images", filename), fileError);
+      
+                geojson.features[0].properties.image = config.base_url + "images/"  + filename;
+              } else {
+                //not an image
+                fileError("The image supplied is not valid. Formats allowed: PNG, JPEG, GIF");
+              }
+          });
 
-	      var filename = shortid.generate() + getExtension(file.path);
-      	  copyFile(file.path, path.resolve(config.data_dir, "images", filename), fileError);
-
-	      geojson.features[0].properties.image = config.base_url + "images/"  + filename;
 	  }
 	  
       req.body = JSON.stringify(geojson);
