@@ -17,6 +17,7 @@
     "body-parser": "~1.13.2",
     "cartodb": "^0.2.1",
     "express": "^4.13.3",
+    "mmmagic": "^0.4.1",
     "multiparty": "^4.1.2",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
