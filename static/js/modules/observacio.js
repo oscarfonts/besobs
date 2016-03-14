@@ -104,7 +104,8 @@ define(['leaflet', 'jquery', 'http', 'bootstrap-datepicker', 'bootstrap-datepick
 			if(response.login == "OK") {
 				showPage("observacio");
 				$("#userId").val(response.user.name);
-				$("#logoutLink").text("Surt (" + response.user.name + ")").click(logout).show();
+				$("#logoutText").text(" Surt (" + response.user.name + ")");
+				$("#logoutLink").click(logout).show();
 				if(response.user.isAdmin) {
 					$("#adminLink").show();
 				}
