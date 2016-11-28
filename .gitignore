@@ -1,5 +1,1 @@
-node_modules/
-DATA_DIR/config.json
-DATA_DIR/users.db
-static/js/lib/
 .idea/

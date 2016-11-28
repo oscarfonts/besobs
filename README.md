@@ -3,7 +3,7 @@
 
 ## Install and run
 
-Requires git, node 4.x and npm.
+Requires git and node 4.x.
 
 Clone this project:
 
@@ -15,8 +15,9 @@ Install node dependencies:
 
 Install bower dependencies:
 
+    npm install -g bower
     bower install
-    
+
 Create the `DATA_DIR/config.json` file and put your CartoDB credentials and public base URL. Use `DATA_DIR/config.sample.json` as model.
 
 Create some users:
@@ -59,7 +60,7 @@ Get the code:
 
 Get the dependencies:
 
-    cd besobs
+    cd besobs/src
     npm install
     bower install
 
@@ -85,25 +86,3 @@ Expose port 2015 through Apache, editing `/etc/apache2/sites-available/<whatever
 Then restart apache:
 
     service apache2 reload
-
-And access:
-
-    http://demo.fonts.cat/besobs/
-
-### Server update script
-
-```
-wget https://github.com/oscarfonts/besobs/archive/master.zip
-unzip master.zip
-rm master.zip
-cp -r besobs/DATA_DIR besobs-master/
-mv besobs besobs-old
-mv besobs-master besobs
-cd besobs
-npm install
-bower --allow-root install
-chown -R www-data .
-service besobs stop
-service besobs start
-service apache2 reload
-```
