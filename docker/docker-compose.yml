@@ -1,0 +1,10 @@
+version: '2'
+services:
+  besobs:
+    build: .
+    image: besobs
+    volumes:
+      - "./data:/besobs/DATA_DIR"
+    ports:
+      - "2015:2015"
+    restart: always
